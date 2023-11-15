@@ -1,0 +1,10 @@
+*.csv
+*.venv
+*.env
+#*.txt
+*.xlsx
+*.pdf
+*.ppt
+__pycache__/
+.ipynb_checkpoints
+.vscode

@@ -1,0 +1,6 @@
+En esta carpeta se suben documentos .txt de interés.
+
+
+(este .txt es informativo, se debe de borrar de la carpeta)
+
+De momento lo dejo para que aparezca la carpeta en Github.

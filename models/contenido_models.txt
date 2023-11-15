@@ -1,0 +1,6 @@
+Se almacenan los modelos que se guarden en pickle u otros formatos.
+
+
+(este .txt es informativo, se debe de borrar)
+
+De momento no lo he borrado para que salga la carpeta en Github.
