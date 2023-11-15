@@ -1,7 +1,7 @@
 # PracticaEDA
 
 Contacto: angel.blanco@cunef.edu
-Github: https://github.com/angelblancog/ml-class
+Github: https://github.com/angelblancog/EDA_practica
 
 Un archivo README contiene información acerca del del proyecto y el contenido de sus carpetas. Es una forma de documentación de software.
 
