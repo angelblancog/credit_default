@@ -167,7 +167,7 @@ def count_values(
     conteo = {}
     n_rows = df.shape[0]
     
-    for i in list:
+    for i in columns:
         conteo[i] = pd.DataFrame((df[i].value_counts()/n_rows)*100).round(2)
         print(f"DataFrame para {i}:")
         print(conteo[i])

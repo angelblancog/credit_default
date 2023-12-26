@@ -1,0 +1,40 @@
+{
+    "numericals": [
+        "date_of_birth_distinct_emails_4w",
+        "intended_balcon_amount",
+        "name_email_similarity",
+        "velocity_24h",
+        "credit_risk_score",
+        "phone_mobile_valid",
+        "customer_age",
+        "month",
+        "velocity_4w",
+        "has_other_cards",
+        "velocity_6h",
+        "days_since_request",
+        "proposed_credit_limit",
+        "prev_address_months_count",
+        "zip_count_4w",
+        "session_length_in_minutes",
+        "bank_branch_count_8w",
+        "income",
+        "device_distinct_emails_8w",
+        "bank_months_count",
+        "phone_home_valid",
+        "current_address_months_count",
+        "email_is_free",
+        "device_fraud_count"
+    ],
+    "categoricals": [
+        "device_os",
+        "source",
+        "housing_status",
+        "employment_status",
+        "payment_type"
+    ],
+    "binary": [
+        "foreign_request",
+        "keep_alive_session"
+    ],
+    "target": "fraud_bool"
+}
