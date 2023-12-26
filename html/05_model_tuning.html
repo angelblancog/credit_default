@@ -3,7 +3,7 @@
 <html lang="en">
 <head><meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>03_model_classification</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>05_model_tuning</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <style type="text/css">
     pre { line-height: 125%; }
 td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
@@ -7493,11 +7493,147 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="Encoding-de-variables-categ%C3%B3ricas,-escalado-y-modelo"><strong>Encoding de variables categóricas, escalado y modelo</strong><a class="anchor-link" href="#Encoding-de-variables-categ%C3%B3ricas,-escalado-y-modelo">¶</a></h1><p>En este notebook se realiza el encoding de las variables categóricas. Muchos algoritmos de aprendizaje automático no pueden manejar las variables categóricas por sí mismas a menos que las convirtamos en valores numéricos. Los resultados producidos por el modelo varían según las diferentes técnicas de codificación utilizadas.</p>
-<p>Las variables categóricas pueden dividirse en dos categorías:</p>
-<pre><code>- Nominal (Sin orden particular)
-- Ordinal (con algún orden)</code></pre>
-<p>A mayores, se llevarán acabo el escalado y la formulación de modelos del proceso de EDA.</p>
+<h1 id="Model-tuning-Logistic-Regression"><strong>Model tuning Logistic Regression</strong><a class="anchor-link" href="#Model-tuning-Logistic-Regression">¶</a></h1><p>En este notebook va a realizarse el proceso de búsqueda y ajuste de hiperparámetros para el tipo de modelo seleccionado.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="Librer%C3%ADas">Librerías<a class="anchor-link" href="#Librer%C3%ADas">¶</a></h3>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+
+<span class="c1"># Cambio del directory al root del proyecto</span>
+<span class="n">current_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="n">current_dir</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">"notebooks"</span><span class="p">:</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">current_dir</span><span class="o">.</span><span class="n">parent</span><span class="p">)</span>
+
+
+<span class="c1"># Procesamiento</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="c1"># Evaluación preliminar del modelo</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">make_scorer</span><span class="p">,</span> 
+    <span class="n">fbeta_score</span>
+<span class="p">)</span>
+
+<span class="c1"># Funciones</span>
+<span class="kn">from</span> <span class="nn">src.metrics</span> <span class="kn">import</span> <span class="n">get_metrics</span>
+<span class="kn">from</span> <span class="nn">src.data</span> <span class="kn">import</span> <span class="n">read_train</span><span class="p">,</span> <span class="n">read_val</span><span class="p">,</span> <span class="n">read_test</span>
+<span class="kn">from</span> <span class="nn">src.models</span> <span class="kn">import</span> <span class="n">write_model</span>
+
+<span class="c1"># Modelos</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LogisticRegression</span>
+
+<span class="c1"># Búsqueda de hiperparámetros</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">RandomizedSearchCV</span>
+
+<span class="c1"># Tiempo de ejecución</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+
+<span class="c1"># Omitir warnings</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">'ignore'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="Carga-de-datos">Carga de datos<a class="anchor-link" href="#Carga-de-datos">¶</a></h3>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span> <span class="o">=</span> <span class="n">read_train</span><span class="p">()</span>
+<span class="n">x_val</span><span class="p">,</span> <span class="n">y_val</span> <span class="o">=</span> <span class="n">read_val</span><span class="p">()</span>
+<span class="n">x_test</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">read_test</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">results_before</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'tables/metrics.csv'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="Modelo-Logistic-Regression">Modelo Logistic Regression<a class="anchor-link" href="#Modelo-Logistic-Regression">¶</a></h3><p>Primeramente, hacemos una búsqueda de hiperparámetros para optimizar el modelo.</p>
+<p>He utilizado un random search porque, pese a que puede que no obtenga unos mejores resultados que el modelo sin tunear, es más eficiente en cuestión de tiempo que un gridsearch.</p>
+<p>Fijo los parámetros que quiero que pruebe:</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">()</span>
+
+<span class="n">f2_scorer</span> <span class="o">=</span> <span class="n">make_scorer</span><span class="p">(</span><span class="n">fbeta_score</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="n">parametros</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">'penalty'</span><span class="p">:</span> <span class="p">[</span><span class="s1">'l1'</span><span class="p">,</span> <span class="s1">'l2'</span><span class="p">,</span> <span class="s1">'elasticnet'</span><span class="p">],</span>
+    <span class="s1">'C'</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">logspace</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span>
+    <span class="s1">'solver'</span><span class="p">:</span> <span class="p">[</span><span class="s1">'lbfgs'</span><span class="p">,</span> <span class="s1">'liblinear'</span><span class="p">,</span> <span class="s1">'newton-cg'</span><span class="p">,</span> <span class="s1">'newton-cholesky'</span><span class="p">,</span> <span class="s1">'sag'</span><span class="p">,</span> <span class="s1">'saga'</span><span class="p">],</span>
+    <span class="s1">'multi_class'</span><span class="p">:</span> <span class="p">[</span><span class="s1">'auto'</span><span class="p">,</span> <span class="s1">'ovr'</span><span class="p">,</span> <span class="s1">'multinomial'</span><span class="p">],</span>
+    <span class="s1">'max_iter'</span><span class="p">:</span> <span class="p">[</span><span class="mi">5000</span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 </div>
 </div>
 </div>
@@ -7509,13 +7645,13 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Environment check</span>
-<span class="kn">import</span> <span class="nn">sys</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">random_search</span> <span class="o">=</span> <span class="n">RandomizedSearchCV</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">param_distributions</span><span class="o">=</span><span class="n">parametros</span><span class="p">,</span> <span class="n">n_iter</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">scoring</span><span class="o">=</span><span class="n">f2_scorer</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">34</span><span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">version</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"---"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">executable</span><span class="p">)</span>
+<span class="n">random_search</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">random_search</span><span class="o">.</span><span class="n">best_params_</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">'------------------'</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'best f2_score: </span><span class="si">{</span><span class="n">random_search</span><span class="o">.</span><span class="n">best_score_</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -7528,10 +7664,96 @@ a.anchor-link {
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>3.10.12 (main, Jun 11 2023, 05:26:28) [GCC 11.4.0]
-['/home/angel/master/ML/repos/ml-class/EDA_Dataset/notebooks', '/usr/lib/python310.zip', '/usr/lib/python3.10', '/usr/lib/python3.10/lib-dynload', '', '/home/angel/master/ML/repos/practica0/.venv/lib/python3.10/site-packages']
----
-/home/angel/master/ML/repos/practica0/.venv/bin/python
+<pre>{'solver': 'sag', 'penalty': 'l2', 'multi_class': 'multinomial', 'max_iter': 5000, 'C': 11.288378916846883}
+------------------
+best f2_score: 0.013221928339172212
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">write_model</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">random_search</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">"random_search"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">final_model</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">(</span><span class="o">**</span><span class="n">random_search</span><span class="o">.</span><span class="n">best_params_</span><span class="p">)</span> <span class="c1">#ponemos ** para que haga unpacking</span>
+
+<span class="c1"># Computamos las métricas sobre los dos sets para ver si hay Overfitting</span>
+<span class="n">sets</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"train"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"x"</span><span class="p">:</span> <span class="n">x_train</span><span class="p">,</span> <span class="s2">"y"</span><span class="p">:</span> <span class="n">y_train</span><span class="p">},</span>
+    <span class="s2">"validation"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"x"</span><span class="p">:</span> <span class="n">x_val</span><span class="p">,</span> <span class="s2">"y"</span><span class="p">:</span> <span class="n">y_val</span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">rows</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="n">name</span> <span class="o">=</span> <span class="n">final_model</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
+<span class="n">start_train</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+<span class="n">final_model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="n">end_train</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+    
+<span class="n">eta_train</span> <span class="o">=</span> <span class="n">end_train</span> <span class="o">-</span> <span class="n">start_train</span>
+    
+<span class="n">model_path</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">'../models/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">.pkl'</span>
+
+<span class="n">write_model</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">final_model</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+    
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Saved model "</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">" at "</span><span class="si">{</span><span class="n">model_path</span><span class="si">}</span><span class="s1">"'</span><span class="p">)</span>
+    
+<span class="c1"># Calculamos las métricas para ambos sets</span>
+<span class="k">for</span> <span class="n">set_name</span><span class="p">,</span> <span class="n">set_data</span> <span class="ow">in</span> <span class="n">sets</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        
+    <span class="n">start_predict</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+    <span class="n">y_pred</span> <span class="o">=</span> <span class="n">final_model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">set_data</span><span class="p">[</span><span class="s2">"x"</span><span class="p">])</span>
+    <span class="n">end_predict</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+
+    <span class="n">eta_predict</span> <span class="o">=</span> <span class="n">end_predict</span> <span class="o">-</span> <span class="n">start_predict</span>
+
+    <span class="n">y_prob</span> <span class="o">=</span> <span class="n">final_model</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">set_data</span><span class="p">[</span><span class="s2">"x"</span><span class="p">])</span>
+        
+    <span class="c1"># Combinamos los dos diccionarios</span>
+    <span class="n">metrics</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">"model"</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
+        <span class="s2">"set"</span><span class="p">:</span> <span class="n">set_name</span><span class="p">,</span>
+        <span class="s2">"training_time (min)"</span><span class="p">:</span> <span class="n">eta_train</span><span class="o">/</span><span class="mi">60</span><span class="p">,</span>
+        <span class="s2">"predict_time (sec)"</span><span class="p">:</span> <span class="n">eta_predict</span><span class="p">}</span> <span class="o">|</span> <span class="n">get_metrics</span><span class="p">(</span><span class="n">y_true</span><span class="o">=</span><span class="n">set_data</span><span class="p">[</span><span class="s2">"y"</span><span class="p">],</span> <span class="n">y_pred</span><span class="o">=</span><span class="n">y_pred</span><span class="p">,</span> <span class="n">y_prob</span><span class="o">=</span><span class="n">y_prob</span><span class="p">)</span>  <span class="c1"># esto devuelve un diccionario</span>
+
+    <span class="c1"># Pandas requiere los valores en formato lista</span>
+    <span class="n">metrics</span> <span class="o">=</span>  <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="p">[</span><span class="n">value</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span>  <span class="ow">in</span> <span class="n">metrics</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+        
+    <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">metrics</span><span class="p">)</span> <span class="p">)</span>
+
+<span class="n">all_metrics</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>Saved model "LogisticRegression" at "../models/LogisticRegression.pkl"
 </pre>
 </div>
 </div>
@@ -7544,85 +7766,7 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h4 id="Librer%C3%ADas">Librerías<a class="anchor-link" href="#Librer%C3%ADas">¶</a></h4>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Procesamiento</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span> 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-
-<span class="c1"># Modelaje</span>
-<span class="kn">import</span> <span class="nn">sklearn</span>
-<span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">Pipeline</span>
-<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">metrics</span>
-<span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">RandomForestClassifier</span><span class="p">,</span> <span class="n">AdaBoostClassifier</span>
-<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
-
-<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">classification_report</span><span class="p">,</span> <span class="n">confusion_matrix</span><span class="p">,</span> <span class="n">roc_curve</span><span class="p">,</span> <span class="n">auc</span><span class="p">,</span> \
-                            <span class="n">silhouette_score</span><span class="p">,</span> <span class="n">recall_score</span><span class="p">,</span> <span class="n">precision_score</span><span class="p">,</span> <span class="n">make_scorer</span><span class="p">,</span> \
-                            <span class="n">roc_auc_score</span><span class="p">,</span> <span class="n">f1_score</span><span class="p">,</span> <span class="n">precision_recall_curve</span><span class="p">,</span> <span class="n">accuracy_score</span><span class="p">,</span> <span class="n">roc_auc_score</span><span class="p">,</span> \
-                            <span class="n">classification_report</span><span class="p">,</span> <span class="n">confusion_matrix</span>
-
-<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">metrics</span>
-<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">ConfusionMatrixDisplay</span>
-<span class="c1"># Encoding</span>
-<span class="kn">import</span> <span class="nn">category_encoders</span> <span class="k">as</span> <span class="nn">ce</span>
-<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">OneHotEncoder</span>
-<span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">GradientBoostingClassifier</span>
-
-<span class="c1"># Gráficos</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h4 id="Lectura-de-datos">Lectura de datos<a class="anchor-link" href="#Lectura-de-datos">¶</a></h4>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">pd_fraud_train</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"../data/preprocessed/train_pd_data_preprocessing_missing_outlier.csv"</span><span class="p">)</span>\
-                  <span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s1">'Unnamed: 0'</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">pd_fraud_test</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"../data/preprocessed/test_pd_data_preprocessing_missing_outlier.csv"</span><span class="p">)</span>\
-                  <span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s1">'Unnamed: 0'</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h4 id="Codificaci%C3%B3n-de-la-variable-objetivo">Codificación de la variable objetivo<a class="anchor-link" href="#Codificaci%C3%B3n-de-la-variable-objetivo">¶</a></h4><p>Siendo 1 indicador de alta probabilidad de fraude y 0 indicador de lo contrario.</p>
+<h3 id="Antes-del-tuning:">Antes del tuning:<a class="anchor-link" href="#Antes-del-tuning:">¶</a></h3>
 </div>
 </div>
 </div>
@@ -7634,94 +7778,8 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">pd_fraud_train</span><span class="p">[</span><span class="s1">'fraud_bool'</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[ ]:</div>
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
-<pre>fraud_bool
-0    791177
-1      8823
-Name: count, dtype: int64</pre>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">X_train</span> <span class="o">=</span> <span class="n">pd_fraud_train</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">'fraud_bool'</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">X_test</span> <span class="o">=</span> <span class="n">pd_fraud_test</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">'fraud_bool'</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">y_train</span> <span class="o">=</span> <span class="n">pd_fraud_train</span><span class="p">[</span><span class="s1">'fraud_bool'</span><span class="p">]</span>
-<span class="n">y_test</span> <span class="o">=</span> <span class="n">pd_fraud_test</span><span class="p">[</span><span class="s1">'fraud_bool'</span><span class="p">]</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h4 id="Codificaci%C3%B3n-del-resto-de-variables-categoricas">Codificación del resto de variables categoricas<a class="anchor-link" href="#Codificaci%C3%B3n-del-resto-de-variables-categoricas">¶</a></h4><p>He elegido codificarlas con one-hot-encoding.</p>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">list_columns_cat</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">select_dtypes</span><span class="p">([</span><span class="s2">"object"</span><span class="p">,</span> <span class="s2">"category"</span><span class="p">])</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
-<span class="n">list_other</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span><span class="o">-</span><span class="nb">set</span><span class="p">(</span><span class="n">list_columns_cat</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">hot</span> <span class="o">=</span> <span class="n">ce</span><span class="o">.</span><span class="n">OneHotEncoder</span><span class="p">(</span><span class="n">cols</span><span class="o">=</span><span class="n">list_columns_cat</span><span class="p">)</span>
-<span class="n">modelo</span> <span class="o">=</span> <span class="n">hot</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">modelo</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Filtramos con una query para simplificar</span>
+<span class="n">results_before</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">"model == 'LogisticRegression'"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -7734,9 +7792,72 @@ Name: count, dtype: int64</pre>
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
 <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[ ]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
-<style>#sk-container-id-1 {color: black;}#sk-container-id-1 pre{padding: 0;}#sk-container-id-1 div.sk-toggleable {background-color: white;}#sk-container-id-1 label.sk-toggleable__label {cursor: pointer;display: block;width: 100%;margin-bottom: 0;padding: 0.3em;box-sizing: border-box;text-align: center;}#sk-container-id-1 label.sk-toggleable__label-arrow:before {content: "▸";float: left;margin-right: 0.25em;color: #696969;}#sk-container-id-1 label.sk-toggleable__label-arrow:hover:before {color: black;}#sk-container-id-1 div.sk-estimator:hover label.sk-toggleable__label-arrow:before {color: black;}#sk-container-id-1 div.sk-toggleable__content {max-height: 0;max-width: 0;overflow: hidden;text-align: left;background-color: #f0f8ff;}#sk-container-id-1 div.sk-toggleable__content pre {margin: 0.2em;color: black;border-radius: 0.25em;background-color: #f0f8ff;}#sk-container-id-1 input.sk-toggleable__control:checked~div.sk-toggleable__content {max-height: 200px;max-width: 100%;overflow: auto;}#sk-container-id-1 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {content: "▾";}#sk-container-id-1 div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-1 div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-1 input.sk-hidden--visually {border: 0;clip: rect(1px 1px 1px 1px);clip: rect(1px, 1px, 1px, 1px);height: 1px;margin: -1px;overflow: hidden;padding: 0;position: absolute;width: 1px;}#sk-container-id-1 div.sk-estimator {font-family: monospace;background-color: #f0f8ff;border: 1px dotted black;border-radius: 0.25em;box-sizing: border-box;margin-bottom: 0.5em;}#sk-container-id-1 div.sk-estimator:hover {background-color: #d4ebff;}#sk-container-id-1 div.sk-parallel-item::after {content: "";width: 100%;border-bottom: 1px solid gray;flex-grow: 1;}#sk-container-id-1 div.sk-label:hover label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-1 div.sk-serial::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 0;bottom: 0;left: 50%;z-index: 0;}#sk-container-id-1 div.sk-serial {display: flex;flex-direction: column;align-items: center;background-color: white;padding-right: 0.2em;padding-left: 0.2em;position: relative;}#sk-container-id-1 div.sk-item {position: relative;z-index: 1;}#sk-container-id-1 div.sk-parallel {display: flex;align-items: stretch;justify-content: center;background-color: white;position: relative;}#sk-container-id-1 div.sk-item::before, #sk-container-id-1 div.sk-parallel-item::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 0;bottom: 0;left: 50%;z-index: -1;}#sk-container-id-1 div.sk-parallel-item {display: flex;flex-direction: column;z-index: 1;position: relative;background-color: white;}#sk-container-id-1 div.sk-parallel-item:first-child::after {align-self: flex-end;width: 50%;}#sk-container-id-1 div.sk-parallel-item:last-child::after {align-self: flex-start;width: 50%;}#sk-container-id-1 div.sk-parallel-item:only-child::after {width: 0;}#sk-container-id-1 div.sk-dashed-wrapped {border: 1px dashed gray;margin: 0 0.4em 0.5em 0.4em;box-sizing: border-box;padding-bottom: 0.4em;background-color: white;}#sk-container-id-1 div.sk-label label {font-family: monospace;font-weight: bold;display: inline-block;line-height: 1.2em;}#sk-container-id-1 div.sk-label-container {text-align: center;}#sk-container-id-1 div.sk-container {/* jupyter's `normalize.less` sets `[hidden] { display: none; }` but bootstrap.min.css set `[hidden] { display: none !important; }` so we also need the `!important` here to be able to override the default hidden behavior on the sphinx rendered scikit-learn.org. See: https://github.com/scikit-learn/scikit-learn/issues/21755 */display: inline-block !important;position: relative;}#sk-container-id-1 div.sk-text-repr-fallback {display: none;}</style><div class="sk-top-container" id="sk-container-id-1"><div class="sk-text-repr-fallback"><pre>OneHotEncoder(cols=['device_os', 'source', 'housing_status',
-                    'employment_status', 'payment_type'])</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br/>On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden=""><div class="sk-item"><div class="sk-estimator sk-toggleable"><input checked="" class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-1" type="checkbox"/><label class="sk-toggleable__label sk-toggleable__label-arrow" for="sk-estimator-id-1">OneHotEncoder</label><div class="sk-toggleable__content"><pre>OneHotEncoder(cols=['device_os', 'source', 'housing_status',
-                    'employment_status', 'payment_type'])</pre></div></div></div></div></div>
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th></th>
+<th>model</th>
+<th>set</th>
+<th>training_time (min)</th>
+<th>predict_time (sec)</th>
+<th>accuracy</th>
+<th>precission</th>
+<th>recall</th>
+<th>f1_score</th>
+<th>f2_score</th>
+<th>ROC_0</th>
+<th>ROC_1</th>
+<th>tuned</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>0</th>
+<td>LogisticRegression</td>
+<td>train</td>
+<td>0.1561</td>
+<td>0.0423</td>
+<td>0.9164</td>
+<td>0.8173</td>
+<td>0.7494</td>
+<td>0.7819</td>
+<td>0.7621</td>
+<td>0.0433</td>
+<td>0.9567</td>
+<td>False</td>
+</tr>
+<tr>
+<th>1</th>
+<td>LogisticRegression</td>
+<td>validation</td>
+<td>0.1561</td>
+<td>0.0077</td>
+<td>0.9495</td>
+<td>0.0812</td>
+<td>0.3472</td>
+<td>0.1317</td>
+<td>0.2098</td>
+<td>0.1591</td>
+<td>0.8409</td>
+<td>False</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 </div>
 </div>
@@ -7749,112 +7870,8 @@ Name: count, dtype: int64</pre>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">X_train_t</span> <span class="o">=</span> <span class="n">modelo</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
-<span class="n">X_test_t</span> <span class="o">=</span> <span class="n">modelo</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">results_before</span><span class="p">[</span><span class="s2">"tuned"</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
 </pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">X_train_t</span><span class="o">.</span><span class="n">columns</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[ ]:</div>
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
-<pre>52</pre>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">X_train_t</span><span class="o">.</span><span class="n">dtypes</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[ ]:</div>
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
-<pre>{'income': dtype('float64'),
- 'device_fraud_count': dtype('int64'),
- 'device_distinct_emails_8w': dtype('int64'),
- 'keep_alive_session': dtype('int64'),
- 'device_os_1': dtype('int64'),
- 'device_os_2': dtype('int64'),
- 'device_os_3': dtype('int64'),
- 'device_os_4': dtype('int64'),
- 'device_os_5': dtype('int64'),
- 'session_length_in_minutes': dtype('float64'),
- 'source_1': dtype('int64'),
- 'source_2': dtype('int64'),
- 'foreign_request': dtype('int64'),
- 'proposed_credit_limit': dtype('float64'),
- 'has_other_cards': dtype('int64'),
- 'bank_months_count': dtype('int64'),
- 'phone_mobile_valid': dtype('int64'),
- 'phone_home_valid': dtype('int64'),
- 'housing_status_1': dtype('int64'),
- 'housing_status_2': dtype('int64'),
- 'housing_status_3': dtype('int64'),
- 'housing_status_4': dtype('int64'),
- 'housing_status_5': dtype('int64'),
- 'housing_status_6': dtype('int64'),
- 'housing_status_7': dtype('int64'),
- 'email_is_free': dtype('int64'),
- 'credit_risk_score': dtype('float64'),
- 'employment_status_1': dtype('int64'),
- 'employment_status_2': dtype('int64'),
- 'employment_status_3': dtype('int64'),
- 'employment_status_4': dtype('int64'),
- 'employment_status_5': dtype('int64'),
- 'employment_status_6': dtype('int64'),
- 'employment_status_7': dtype('int64'),
- 'date_of_birth_distinct_emails_4w': dtype('int64'),
- 'bank_branch_count_8w': dtype('float64'),
- 'velocity_4w': dtype('float64'),
- 'velocity_24h': dtype('float64'),
- 'velocity_6h': dtype('float64'),
- 'zip_count_4w': dtype('float64'),
- 'payment_type_1': dtype('int64'),
- 'payment_type_2': dtype('int64'),
- 'payment_type_3': dtype('int64'),
- 'payment_type_4': dtype('int64'),
- 'payment_type_5': dtype('int64'),
- 'intended_balcon_amount': dtype('float64'),
- 'days_since_request': dtype('float64'),
- 'customer_age': dtype('int64'),
- 'current_address_months_count': dtype('float64'),
- 'prev_address_months_count': dtype('float64'),
- 'name_email_similarity': dtype('float64'),
- 'month': dtype('int64')}</pre>
 </div>
 </div>
 </div>
@@ -7866,7 +7883,205 @@ Name: count, dtype: int64</pre>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>Hasta aquí hemos llegado para la práctica del EDA de momento.</p>
+<h3 id="Despu%C3%A9s-del-tuning:">Después del tuning:<a class="anchor-link" href="#Despu%C3%A9s-del-tuning:">¶</a></h3>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">final_results</span> <span class="o">=</span> <span class="n">all_metrics</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">final_results</span><span class="p">[</span><span class="s2">"tuned"</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">final_results</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[ ]:</div>
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th></th>
+<th>model</th>
+<th>set</th>
+<th>training_time (min)</th>
+<th>predict_time (sec)</th>
+<th>accuracy</th>
+<th>precission</th>
+<th>recall</th>
+<th>f1_score</th>
+<th>f2_score</th>
+<th>ROC_0</th>
+<th>ROC_1</th>
+<th>tuned</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>0</th>
+<td>LogisticRegression</td>
+<td>train</td>
+<td>7.6484</td>
+<td>0.0698</td>
+<td>0.9890</td>
+<td>0.5568</td>
+<td>0.0108</td>
+<td>0.0213</td>
+<td>0.0135</td>
+<td>0.1247</td>
+<td>0.8753</td>
+<td>True</td>
+</tr>
+<tr>
+<th>0</th>
+<td>LogisticRegression</td>
+<td>validation</td>
+<td>7.6484</td>
+<td>0.0945</td>
+<td>0.9891</td>
+<td>0.7000</td>
+<td>0.0124</td>
+<td>0.0244</td>
+<td>0.0154</td>
+<td>0.1299</td>
+<td>0.8701</td>
+<td>True</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span>
+    <span class="n">results_before</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">"model == 'LogisticRegression'"</span><span class="p">),</span> <span class="n">final_results</span>
+<span class="p">])</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">"set == 'validation'"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[ ]:</div>
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th></th>
+<th>model</th>
+<th>set</th>
+<th>training_time (min)</th>
+<th>predict_time (sec)</th>
+<th>accuracy</th>
+<th>precission</th>
+<th>recall</th>
+<th>f1_score</th>
+<th>f2_score</th>
+<th>ROC_0</th>
+<th>ROC_1</th>
+<th>tuned</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>1</th>
+<td>LogisticRegression</td>
+<td>validation</td>
+<td>0.1561</td>
+<td>0.0077</td>
+<td>0.9495</td>
+<td>0.0812</td>
+<td>0.3472</td>
+<td>0.1317</td>
+<td>0.2098</td>
+<td>0.1591</td>
+<td>0.8409</td>
+<td>False</td>
+</tr>
+<tr>
+<th>0</th>
+<td>LogisticRegression</td>
+<td>validation</td>
+<td>7.6484</td>
+<td>0.0945</td>
+<td>0.9891</td>
+<td>0.7000</td>
+<td>0.0124</td>
+<td>0.0244</td>
+<td>0.0154</td>
+<td>0.1299</td>
+<td>0.8701</td>
+<td>True</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>Los resultados son prácticamente idénticos, pero el tiempo de entrenamiento es bastante mayor después del tuning así que, al ser aleatorio no ha habido mucha suerte con la combinación y no se obtiene una mejoría sustancial en comparación con el aumento de tiempo de entrenamiento. Por tanto, nos quedamos con el modelo sin tuning.</p>
+<p>Cabe destacar también que ambos modelos presentan overfitting.</p>
 </div>
 </div>
 </div>

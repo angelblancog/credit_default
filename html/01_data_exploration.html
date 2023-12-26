@@ -7483,7 +7483,7 @@ a.anchor-link {
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h2 id="M%C3%A1ster-en-Data-Science">Máster en Data Science<a class="anchor-link" href="#M%C3%A1ster-en-Data-Science">¶</a></h2><h3 id="Machine-Learning">Machine Learning<a class="anchor-link" href="#Machine-Learning">¶</a></h3><p>Contacto: angel.blanco@cunef.edu</p>
-<h2 id="EDA-Bank-Account-Fraud-Dataset-Suite-(NeurIPS-2022)"><strong>EDA Bank Account Fraud Dataset Suite (NeurIPS 2022)</strong><a class="anchor-link" href="#EDA-Bank-Account-Fraud-Dataset-Suite-(NeurIPS-2022)">¶</a></h2><h3 id="Sobre-el-dataset:">Sobre el dataset:<a class="anchor-link" href="#Sobre-el-dataset:">¶</a></h3><p>El conjunto de conjuntos de datos sobre fraude de cuentas bancarias (BAF) se publicó en NeurIPS 2022 y comprende un total de 6 conjuntos de datos tabulares sintéticos diferentes sobre fraude de cuentas bancarias. BAF es un banco de pruebas realista, completo y sólido para evaluar métodos.</p>
+<h2 id="EDA-Bank-Account-Fraud-Dataset-Suite-(NeurIPS-2022)"><strong>EDA Bank Account Fraud Dataset Suite (NeurIPS 2022)</strong><a class="anchor-link" href="#EDA-Bank-Account-Fraud-Dataset-Suite-(NeurIPS-2022)">¶</a></h2><h3 id="Sobre-el-dataset:">Sobre el dataset:<a class="anchor-link" href="#Sobre-el-dataset:">¶</a></h3><p>El conjunto de datos sobre fraude de cuentas bancarias (BAF) se publicó en NeurIPS 2022 y comprende un total de 6 conjuntos de tablas sintéticas diferentes sobre fraude de cuentas bancarias.</p>
 <p>Según la web, este conjunto de conjuntos de datos es:</p>
 <ul>
 <li>Realista, basado en un conjunto de datos del mundo real actual para la detección de fraude;</li>
@@ -7492,85 +7492,32 @@ a.anchor-link {
 <li>Dinámico, con datos temporales y cambios de distribución observados;</li>
 <li>Preservación de la privacidad, para proteger la identidad de los solicitantes potenciales, hemos aplicado técnicas de privacidad diferencial (adición de ruido), codificación de características y entrenado un modelo generativo (CTGAN).</li>
 </ul>
-<p>En este caso usaremos únicamente el conjunto de datos Base.</p>
-<p>Es un conjunto de datos sintético de fraude en la apertura de cuentas con 1 millón de instancias y basado en un conjunto de datos del mundo real. Tiene una columna de ‘mes’ para permitir la validación temporal y tres atributos protegidos (grupo de edad, estado laboral y % de ingresos) para permitir una evaluación de ML.</p>
-<h3 id="Diccionario-de-datos:-en-la-web-describe-las-variables-de-la-siguiente-manera:">Diccionario de datos: en la web describe las variables de la siguiente manera:<a class="anchor-link" href="#Diccionario-de-datos:-en-la-web-describe-las-variables-de-la-siguiente-manera:">¶</a></h3><p>• <strong>income (numeric):</strong> Annual income of the applicant (in decile form). Ranges between [0.1, 0.9].</p>
-<p>• <strong>name_email_similarity (numeric):</strong> Metric of similarity between email and applicant’s name. Higher values represent higher similarity. Ranges between [0, 1].</p>
-<p>• <strong>prev_address_months_count (numeric):</strong> Number of months in previous registered address of the applicant, i.e. the applicant’s previous residence, if applicable. Ranges between [−1, 380] months (-1 is a missing value).</p>
-<p>• <strong>current_address_months_count (numeric):</strong> Months in currently registered address of the applicant. Ranges between [−1, 429] months (<strong>-1 is a missing value</strong>).</p>
-<p>• <strong>customer_age (numeric):</strong> Applicant’s age in years, rounded to the decade. Ranges between [10, 90] years.</p>
-<p>• <strong>days_since_request (numeric):</strong> Number of days passed since application was done. Ranges between [0, 79] days.</p>
-<p>• <strong>intended_balcon_amount (numeric):</strong> Initial transferred amount for application. Ranges between [−16, 114] (<strong>negatives are missing values</strong>).</p>
-<p>• <strong>payment_type (categorical):</strong> Credit payment plan type. 5 possible (annonymized) values.</p>
-<p>• <strong>zip_count_4w (numeric):</strong> Number of applications within same zip code in last 4 weeks. Ranges between [1, 6830].</p>
-<p>• <strong>velocity_6h (numeric)</strong>: Velocity of total applications made in last 6 hours i.e., average number of applications per hour in the last 6 hours. Ranges between [−175, 16818].</p>
-<p>• <strong>velocity_24h (numeric):</strong> Velocity of total applications made in last 24 hours i.e., average number of applications per hour in the last 24 hours. Ranges between [1297, 9586].</p>
-<p>• <strong>velocity_4w (numeric):</strong> Velocity of total applications made in last 4 weeks, i.e., average number of applications per hour in the last 4 weeks. Ranges between [2825, 7020].</p>
-<p>• <strong>bank_branch_count_8w (numeric):</strong> Number of total applications in the selected bank branch in last 8 weeks. Ranges between [0, 2404].</p>
-<p>• <strong>date_of_birth_distinct_emails_4w (numeric)</strong>: Number of emails for applicants with same date of birth in last 4 weeks. Ranges between [0, 39].</p>
-<p>• <strong>employment_status (categorical):</strong> Employment status of the applicant. 7 possible (annonymized) values.</p>
-<p>• <strong>credit_risk_score (numeric):</strong> Internal score of application risk. Ranges between [−191, 389].</p>
-<p>• <strong>email_is_free (binary):</strong> Domain of application email (either free or paid).</p>
-<p>• <strong>housing_status (categorical):</strong> Current residential status for applicant. 7 possible (annonymized) values.</p>
-<p>• <strong>phone_home_valid (binary):</strong> Validity of provided home phone.</p>
-<p>• <strong>phone_mobile_valid (binary):</strong> Validity of provided mobile phone.</p>
-<p>• <strong>bank_months_count (numeric):</strong> How old is previous account (if held) in months. Ranges between [−1, 32] months (-1 is a missing value).</p>
-<p>• <strong>has_other_cards (binary):</strong> If applicant has other cards from the same banking company.</p>
-<p>• <strong>proposed_credit_limit (numeric):</strong> Applicant’s proposed credit limit. Ranges between [200, 2000].</p>
-<p>• <strong>foreign_request (binary):</strong> If origin country of request is different from bank’s country.</p>
-<p>• <strong>source (categorical):</strong> Online source of application. Either browser (INTERNET) or app (TELEAPP).</p>
-<p>• <strong>session_length_in_minutes (numeric):</strong> Length of user session in banking website in minutes. Ranges between [−1, 107] minutes (-1 is a missing value).</p>
-<p>• <strong>device_os (categorical):</strong> Operative system of device that made request. Possible values are: Windows, macOS, Linux, X11, or other.</p>
-<p>• <strong>keep_alive_session (binary):</strong> User option on session logout.</p>
-<p>• <strong>device_distinct_emails (numeric):</strong> Number of distinct emails in banking website from the used device in last 8 weeks. Ranges between [−1, 2] emails (-1 is a missing value).</p>
-<p>• <strong>device_fraud_count (numeric):</strong> Number of fraudulent applications with used device. Ranges between [0, 1].</p>
-<p>• <strong>month (numeric):</strong> Month where the application was made. Ranges between [0, 7].</p>
-<p>• <strong>fraud_bool (binary):</strong> If the application is fraudulent or not.</p>
-<h3 id="Definici%C3%B3n-del-problema:">Definición del problema:<a class="anchor-link" href="#Definici%C3%B3n-del-problema:">¶</a></h3><p>Se desea predecir, antes de conceder un préstamo a una persona, la probabilidad de que no se devuelva completamente. Por tanto, todas las variables del dataset que se empleen para el modelo, deben poderse utilizar en el momento de su llamada. Para ello, se empleará un algoritmo de clasificación supervisado.</p>
+<p>En este caso se usa únicamente el conjunto de datos 'Base'.</p>
+<p>Es un conjunto de datos sintético de fraude en la apertura de cuentas con 1 millón de instancias y basado en datos del mundo real. Tiene una columna de ‘mes’ para permitir la validación temporal y tres atributos protegidos (grupo de edad, estado laboral y % de ingresos) para permitir una evaluación de ML.</p>
+<h3 id="Diccionario-de-datos"><div style="text-align: center"><a href="docs/dictionary.md"><strong>Diccionario de datos</strong></a></div><a class="anchor-link" href="#Diccionario-de-datos">¶</a></h3><h3 id="Definici%C3%B3n-del-problema:">Definición del problema:<a class="anchor-link" href="#Definici%C3%B3n-del-problema:">¶</a></h3><p>Se desea predecir, antes de conceder un préstamo a una persona, la probabilidad de que no se devuelva completamente. Por tanto, todas las variables del dataset que se empleen para el modelo, deben poderse utilizar en el momento de su llamada. Para ello, se empleará un algoritmo de clasificación supervisado.</p>
 <p>Los pasos a realizar son:</p>
 <ol>
-<li>Análisis inicial de los datos y preprocesamiento inicial</li>
-<li>Correlaciones, tratamiento de missing y outliers</li>
-<li>Tratamiento de variables categoricas: encoding</li>
-<li>Aplicación de algoritmos</li>
-<li>Evaluación con la muestra de test</li>
+<li><p>Definición del problema a resolver y recopilación de datos.</p>
+</li>
+<li><p>Exploración inicial de las variables.</p>
+</li>
+<li><p>Separación en train y test.</p>
+</li>
+<li><p>Tratamiento de missings, outliers y correlaciones.</p>
+</li>
+<li><p>Codificación de las variables categóricas y escalado de los datos.</p>
+</li>
+<li><p>Selección de variables input del modelo.</p>
+</li>
+<li><p>Formulación de un modelo base y prueba de modelos sin ajustar hiperparámetros.</p>
+</li>
+<li><p>Elección del modelo óptimo y ajuste de sus hiperparámetros.</p>
+</li>
+<li><p>Análisis de métricas del modelo.</p>
+</li>
+<li><p>Análisis de explicabilidad.</p>
+</li>
 </ol>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Environment check</span>
-<span class="kn">import</span> <span class="nn">sys</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">version</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"---"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">executable</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>3.10.12 (main, Jun 11 2023, 05:26:28) [GCC 11.4.0]
-['/home/angel/master/ML/repos/ml-class/EDA_Dataset/notebooks', '/usr/lib/python310.zip', '/usr/lib/python3.10', '/usr/lib/python3.10/lib-dynload', '', '/home/angel/master/ML/repos/practica0/.venv/lib/python3.10/site-packages']
----
-/home/angel/master/ML/repos/practica0/.venv/bin/python
-</pre>
-</div>
 </div>
 </div>
 </div>
@@ -7593,16 +7540,28 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Procesado</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 
+<span class="c1"># Cambio el directory al root del proyecto</span>
+<span class="n">current_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="n">current_dir</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">"notebooks"</span><span class="p">:</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">current_dir</span><span class="o">.</span><span class="n">parent</span><span class="p">)</span>
+
+<span class="c1"># Procesado</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
 <span class="c1"># Gráficos</span>
-
 <span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
 <span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
 <span class="kn">import</span> <span class="nn">matplotlib.patches</span> <span class="k">as</span> <span class="nn">mp</span>
 <span class="kn">import</span> <span class="nn">plotly.express</span> <span class="k">as</span> <span class="nn">px</span>
+
+<span class="c1"># Funciones</span>
+<span class="kn">from</span> <span class="nn">src.analysis</span> <span class="kn">import</span> <span class="n">count_values</span>
+<span class="kn">from</span> <span class="nn">src.data</span> <span class="kn">import</span> <span class="n">write_csv</span>
+<span class="kn">from</span> <span class="nn">src.const</span> <span class="kn">import</span> <span class="n">variable_types</span>
 </pre></div>
 </div>
 </div>
@@ -7631,32 +7590,7 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h4 id="Funciones">Funciones<a class="anchor-link" href="#Funciones">¶</a></h4>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">func_aux</span> <span class="kn">import</span> <span class="n">count_values</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h4 id="Leo-la-tabla">Leo la tabla<a class="anchor-link" href="#Leo-la-tabla">¶</a></h4>
+<h4 id="Carga-de-datos">Carga de datos<a class="anchor-link" href="#Carga-de-datos">¶</a></h4>
 </div>
 </div>
 </div>
@@ -7668,7 +7602,7 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">ruta_relativa</span> <span class="o">=</span> <span class="s2">"../data/raw/Base.csv"</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">ruta_relativa</span> <span class="o">=</span> <span class="s2">"data/raw/Base.csv"</span>
 <span class="n">pd_base</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">ruta_relativa</span><span class="p">,</span> <span class="n">low_memory</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">pd_base</span>
 </pre></div>
@@ -8167,7 +8101,8 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">pd_base</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Visualización previa </span>
+<span class="n">pd_base</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -8422,7 +8357,7 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>Pueden verse valores nulos en forma de -1 y números negativos en varias columnas, más adelante trataré ese tema</p>
+<p>Pueden verse valores nulos en forma de -1 y números negativos en varias columnas, más adelante se tratarán.</p>
 </div>
 </div>
 </div>
@@ -8445,7 +8380,8 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">pd_base</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">pd_base</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Caomprobación de duplicados</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">pd_base</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">pd_base</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -8464,60 +8400,14 @@ a.anchor-link {
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">pd_base</span><span class="o">.</span><span class="n">dtypes</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[ ]:</div>
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
-<pre>{'fraud_bool': dtype('int64'),
- 'income': dtype('float64'),
- 'name_email_similarity': dtype('float64'),
- 'prev_address_months_count': dtype('int64'),
- 'current_address_months_count': dtype('int64'),
- 'customer_age': dtype('int64'),
- 'days_since_request': dtype('float64'),
- 'intended_balcon_amount': dtype('float64'),
- 'payment_type': dtype('O'),
- 'zip_count_4w': dtype('int64'),
- 'velocity_6h': dtype('float64'),
- 'velocity_24h': dtype('float64'),
- 'velocity_4w': dtype('float64'),
- 'bank_branch_count_8w': dtype('int64'),
- 'date_of_birth_distinct_emails_4w': dtype('int64'),
- 'employment_status': dtype('O'),
- 'credit_risk_score': dtype('int64'),
- 'email_is_free': dtype('int64'),
- 'housing_status': dtype('O'),
- 'phone_home_valid': dtype('int64'),
- 'phone_mobile_valid': dtype('int64'),
- 'bank_months_count': dtype('int64'),
- 'has_other_cards': dtype('int64'),
- 'proposed_credit_limit': dtype('float64'),
- 'foreign_request': dtype('int64'),
- 'source': dtype('O'),
- 'session_length_in_minutes': dtype('float64'),
- 'device_os': dtype('O'),
- 'keep_alive_session': dtype('int64'),
- 'device_distinct_emails_8w': dtype('int64'),
- 'device_fraud_count': dtype('int64'),
- 'month': dtype('int64')}</pre>
-</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>No tiene duplicados.</p>
 </div>
 </div>
 </div>
@@ -8528,7 +8418,7 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h4 id="Plots-an%C3%A1lisis-descriptivo"><strong>Plots análisis descriptivo</strong><a class="anchor-link" href="#Plots-an%C3%A1lisis-descriptivo">¶</a></h4>
+<h4 id="Gr%C3%A1ficos-de-an%C3%A1lisis-descriptivo"><strong>Gráficos de análisis descriptivo</strong><a class="anchor-link" href="#Gr%C3%A1ficos-de-an%C3%A1lisis-descriptivo">¶</a></h4>
 </div>
 </div>
 </div>
@@ -8543,21 +8433,6 @@ a.anchor-link {
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># pd_fraud = pd_base['fraud_bool']</span>
-<span class="c1"># pd_fraud</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
@@ -8566,10 +8441,16 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">pd_plot_fraud_bool</span> <span class="o">=</span> <span class="n">pd_base</span><span class="p">[</span><span class="s1">'fraud_bool'</span><span class="p">]</span>\
-        <span class="o">.</span><span class="n">value_counts</span><span class="p">(</span><span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>\
-        <span class="o">.</span><span class="n">mul</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s1">'percent'</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Filtrado de la variable objetivo en porcentaje</span>
+<span class="n">pd_plot_fraud_bool</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">pd_base</span><span class="p">[</span><span class="s1">'fraud_bool'</span><span class="p">]</span>
+        <span class="o">.</span><span class="n">value_counts</span><span class="p">(</span><span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">mul</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s1">'percent'</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+<span class="p">)</span>
 
+<span class="c1"># Conteo de valores de fraud_bool y unión de dataframes</span>
 <span class="n">pd_plot_fraud_bool_conteo</span> <span class="o">=</span> <span class="n">pd_base</span><span class="p">[</span><span class="s1">'fraud_bool'</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
 <span class="n">pd_plot_fraud_bool_pc</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">pd_plot_fraud_bool</span><span class="p">,</span> <span class="n">pd_plot_fraud_bool_conteo</span><span class="p">,</span> <span class="n">left_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">right_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">'inner'</span><span class="p">)</span>
 <span class="n">pd_plot_fraud_bool_pc</span>
@@ -8639,7 +8520,8 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">pd_plot_fraud_bool_pc</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">pd_plot_fraud_bool_pc</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="p">[</span><span class="s1">'percent'</span><span class="p">])</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Representaión gráfica</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">pd_plot_fraud_bool_pc</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">pd_plot_fraud_bool_pc</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="p">[</span><span class="s1">'percent'</span><span class="p">])</span>
 <span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">'Porcentaje de fraudes'</span><span class="p">,</span> <span class="n">xaxis_title</span><span class="o">=</span><span class="s1">'Fraude'</span><span class="p">,</span> <span class="n">yaxis_title</span><span class="o">=</span><span class="s1">'Porcentaje'</span><span class="p">)</span>
 
 <span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
@@ -8680,9 +8562,9 @@ a.anchor-link {
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
-<div> <div class="plotly-graph-div" id="0415b163-d33d-4376-969d-31d2ece2d938" style="height:525px; width:100%;"></div> <script type="text/javascript">                require(["plotly"], function(Plotly) {                    window.PLOTLYENV=window.PLOTLYENV || {};                                    if (document.getElementById("0415b163-d33d-4376-969d-31d2ece2d938")) {                    Plotly.newPlot(                        "0415b163-d33d-4376-969d-31d2ece2d938",                        [{"alignmentgroup":"True","bingroup":"x","histfunc":"sum","hovertemplate":"variable=percent\u003cbr\u003eindex=%{x}\u003cbr\u003esum of value=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"percent","marker":{"color":"#636efa","pattern":{"shape":""}},"name":"percent","offsetgroup":"percent","orientation":"v","showlegend":true,"x":[0,1],"xaxis":"x","y":[98.89710000000001,1.1029],"yaxis":"y","type":"histogram"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmapgl":[{"type":"heatmapgl","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"}}},"xaxis":{"anchor":"y","domain":[0.0,1.0],"title":{"text":"Fraude"}},"yaxis":{"anchor":"x","domain":[0.0,1.0],"title":{"text":"Porcentaje"}},"legend":{"title":{"text":"variable"},"tracegroupgap":0},"margin":{"t":60},"barmode":"relative","title":{"text":"Porcentaje de fraudes"}},                        {"responsive": true}                    ).then(function(){
+<div> <div class="plotly-graph-div" id="9203d73f-a601-49fc-922a-2dc92e99453d" style="height:525px; width:100%;"></div> <script type="text/javascript">                require(["plotly"], function(Plotly) {                    window.PLOTLYENV=window.PLOTLYENV || {};                                    if (document.getElementById("9203d73f-a601-49fc-922a-2dc92e99453d")) {                    Plotly.newPlot(                        "9203d73f-a601-49fc-922a-2dc92e99453d",                        [{"alignmentgroup":"True","bingroup":"x","histfunc":"sum","hovertemplate":"variable=percent\u003cbr\u003eindex=%{x}\u003cbr\u003esum of value=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"percent","marker":{"color":"#636efa","pattern":{"shape":""}},"name":"percent","offsetgroup":"percent","orientation":"v","showlegend":true,"x":[0,1],"xaxis":"x","y":[98.89710000000001,1.1029],"yaxis":"y","type":"histogram"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmapgl":[{"type":"heatmapgl","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"}}},"xaxis":{"anchor":"y","domain":[0.0,1.0],"title":{"text":"Fraude"}},"yaxis":{"anchor":"x","domain":[0.0,1.0],"title":{"text":"Porcentaje"}},"legend":{"title":{"text":"variable"},"tracegroupgap":0},"margin":{"t":60},"barmode":"relative","title":{"text":"Porcentaje de fraudes"}},                        {"responsive": true}                    ).then(function(){
                             
-var gd = document.getElementById('0415b163-d33d-4376-969d-31d2ece2d938');
+var gd = document.getElementById('9203d73f-a601-49fc-922a-2dc92e99453d');
 var x = new MutationObserver(function (mutations, observer) {{
         var display = window.getComputedStyle(gd).display;
         if (!display || display === 'none') {{
@@ -8716,7 +8598,8 @@ if (outputEl) {{
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>Tengo muchos más casos normales que de fraude, eso será un problema que resolveremos más adelante con técnicas de over o undersampling. Pasemos a ver los valores nulos.</p>
+<p>Los datos presentan muchos más casos normales que de fraude, eso será un problema que habrá que resolver más adelante con técnicas de over o undersampling para optar a obtener mejores resultados en las predicciones del modelo.</p>
+<p>A continuación se analizarán los valores nulos.</p>
 </div>
 </div>
 </div>
@@ -8727,7 +8610,7 @@ if (outputEl) {{
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h4 id="Selecci%C3%B3n-de-threshold-por-filas-y-columnas-para-eliminar-valores-missing">Selección de threshold por filas y columnas para eliminar valores missing<a class="anchor-link" href="#Selecci%C3%B3n-de-threshold-por-filas-y-columnas-para-eliminar-valores-missing">¶</a></h4><p>Analizo la cantidad y el porcentaje de valores nulos en cada columna y fila</p>
+<h4 id="Selecci%C3%B3n-de-threshold-por-filas-y-columnas-para-eliminar-valores-missing">Selección de threshold por filas y columnas para eliminar valores missing<a class="anchor-link" href="#Selecci%C3%B3n-de-threshold-por-filas-y-columnas-para-eliminar-valores-missing">¶</a></h4><p>Análisis de la cantidad y el porcentaje de valores nulos en cada columna y fila</p>
 </div>
 </div>
 </div>
@@ -8739,10 +8622,12 @@ if (outputEl) {{
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">pd_series_null_columns</span> <span class="o">=</span> <span class="n">pd_base</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Filtración de nulos por fila y columna</span>
+<span class="n">pd_series_null_columns</span> <span class="o">=</span> <span class="n">pd_base</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">pd_series_null_rows</span> <span class="o">=</span> <span class="n">pd_base</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">pd_series_null_columns</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">pd_series_null_rows</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 
+<span class="c1"># Construcción de un dataframe que enseñe porcentajes</span>
 <span class="n">pd_null_columnas</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">pd_series_null_columns</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">'nulos_columnas'</span><span class="p">])</span>     
 <span class="n">pd_null_filas</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">pd_series_null_rows</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">'nulos_filas'</span><span class="p">])</span>  
 <span class="n">pd_null_filas</span><span class="p">[</span><span class="s1">'target'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd_base</span><span class="p">[</span><span class="s1">'fraud_bool'</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
@@ -8792,6 +8677,17 @@ if (outputEl) {{
 </div>
 </div>
 </div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>Comprobando con el tamaño del pd_base, parece que no hay nulos.</p>
+</div>
+</div>
+</div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
@@ -8800,7 +8696,8 @@ if (outputEl) {{
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">pd_null_columnas</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Porcentaje de nulos por columna</span>
+<span class="n">pd_null_columnas</span>
 </pre></div>
 </div>
 </div>
@@ -9158,7 +9055,8 @@ if (outputEl) {{
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>No parece que tenga ningún valor null en las filas ni las columnas. Pasemos ahora a clasificar variables por tipos</p>
+<p>No parece que tenga ningún valor nulo en las filas ni las columnas.</p>
+<p>A continuación de muestra la clasificación de variables por tipos.</p>
 </div>
 </div>
 </div>
@@ -9180,7 +9078,7 @@ if (outputEl) {{
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>Me quedo con las funciones que son categóricas según el diccionario de datos y con las numéricas en base a eso</p>
+<p>La selección de las variables categóricas y numéricas se ha realizado según el diccionario de datos, pero filtrando en base al json creado. Se ha elegido este método hardcodeado porque no es bueno fiarse de los tipos que se asignan automáticamente al leer el csv.</p>
 </div>
 </div>
 </div>
@@ -9192,8 +9090,9 @@ if (outputEl) {{
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">cat_vars</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'fraud_bool'</span><span class="p">,</span><span class="s1">'device_os'</span><span class="p">,</span> <span class="s1">'source'</span><span class="p">,</span> <span class="s1">'housing_status'</span><span class="p">,</span> <span class="s1">'employment_status'</span><span class="p">,</span> <span class="s1">'payment_type'</span><span class="p">]</span>
-<span class="n">num_vars</span> <span class="o">=</span> <span class="n">pd_base</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="o">~</span><span class="n">pd_base</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">cat_vars</span><span class="p">)]</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Definición de variables por tipo</span>
+<span class="n">cat_vars</span> <span class="o">=</span> <span class="n">variable_types</span><span class="p">[</span><span class="s1">'categoricals'</span><span class="p">]</span>
+<span class="n">num_vars</span> <span class="o">=</span> <span class="n">variable_types</span><span class="p">[</span><span class="s1">'numericals'</span><span class="p">]</span>
 <span class="n">num_vars</span>
 </pre></div>
 </div>
@@ -9207,16 +9106,30 @@ if (outputEl) {{
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
 <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[ ]:</div>
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
-<pre>Index(['income', 'name_email_similarity', 'prev_address_months_count',
-       'current_address_months_count', 'customer_age', 'days_since_request',
-       'intended_balcon_amount', 'zip_count_4w', 'velocity_6h', 'velocity_24h',
-       'velocity_4w', 'bank_branch_count_8w',
-       'date_of_birth_distinct_emails_4w', 'credit_risk_score',
-       'email_is_free', 'phone_home_valid', 'phone_mobile_valid',
-       'bank_months_count', 'has_other_cards', 'proposed_credit_limit',
-       'foreign_request', 'session_length_in_minutes', 'keep_alive_session',
-       'device_distinct_emails_8w', 'device_fraud_count', 'month'],
-      dtype='object')</pre>
+<pre>['date_of_birth_distinct_emails_4w',
+ 'intended_balcon_amount',
+ 'name_email_similarity',
+ 'velocity_24h',
+ 'credit_risk_score',
+ 'phone_mobile_valid',
+ 'customer_age',
+ 'month',
+ 'velocity_4w',
+ 'has_other_cards',
+ 'velocity_6h',
+ 'days_since_request',
+ 'proposed_credit_limit',
+ 'prev_address_months_count',
+ 'zip_count_4w',
+ 'session_length_in_minutes',
+ 'bank_branch_count_8w',
+ 'income',
+ 'device_distinct_emails_8w',
+ 'bank_months_count',
+ 'phone_home_valid',
+ 'current_address_months_count',
+ 'email_is_free',
+ 'device_fraud_count']</pre>
 </div>
 </div>
 </div>
@@ -9229,7 +9142,8 @@ if (outputEl) {{
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">pd_base_filter_null</span><span class="p">[</span><span class="n">cat_vars</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd_base_filter_null</span><span class="p">[</span><span class="n">cat_vars</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">"category"</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Cambio del type a category</span>
+<span class="n">pd_base_filter_null</span><span class="p">[</span><span class="n">cat_vars</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd_base_filter_null</span><span class="p">[</span><span class="n">cat_vars</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">"category"</span><span class="p">)</span>
 <span class="n">pd_base_filter_null</span><span class="p">[</span><span class="n">cat_vars</span><span class="p">]</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -9261,7 +9175,6 @@ if (outputEl) {{
 <thead>
 <tr style="text-align: right;">
 <th></th>
-<th>fraud_bool</th>
 <th>device_os</th>
 <th>source</th>
 <th>housing_status</th>
@@ -9272,7 +9185,6 @@ if (outputEl) {{
 <tbody>
 <tr>
 <th>0</th>
-<td>1</td>
 <td>windows</td>
 <td>INTERNET</td>
 <td>BA</td>
@@ -9281,7 +9193,6 @@ if (outputEl) {{
 </tr>
 <tr>
 <th>1</th>
-<td>1</td>
 <td>windows</td>
 <td>INTERNET</td>
 <td>BA</td>
@@ -9290,7 +9201,6 @@ if (outputEl) {{
 </tr>
 <tr>
 <th>2</th>
-<td>1</td>
 <td>other</td>
 <td>INTERNET</td>
 <td>BA</td>
@@ -9299,7 +9209,6 @@ if (outputEl) {{
 </tr>
 <tr>
 <th>3</th>
-<td>1</td>
 <td>linux</td>
 <td>INTERNET</td>
 <td>BA</td>
@@ -9308,7 +9217,6 @@ if (outputEl) {{
 </tr>
 <tr>
 <th>4</th>
-<td>1</td>
 <td>macintosh</td>
 <td>INTERNET</td>
 <td>BA</td>
@@ -9330,7 +9238,9 @@ if (outputEl) {{
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">count_values</span><span class="p">(</span><span class="n">pd_base_filter_null</span><span class="p">,</span> <span class="n">cat_vars</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Comprobación de porcentaje de distribución de</span>
+<span class="c1"># valores diferentes de variables categóricas</span>
+<span class="n">count_values</span><span class="p">(</span><span class="n">pd_base_filter_null</span><span class="p">,</span> <span class="n">cat_vars</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -9343,62 +9253,55 @@ if (outputEl) {{
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>DataFrame para fraud_bool:
-             count
-fraud_bool        
-0           988971
-1            11029
-
-
-DataFrame para device_os:
-            count
-device_os        
-other      342728
-linux      332712
-windows    263506
-macintosh   53826
-x11          7228
+<pre>DataFrame para device_os:
+           count
+device_os       
+other      34.27
+linux      33.27
+windows    26.35
+macintosh   5.38
+x11         0.72
 
 
 DataFrame para source:
-           count
-source          
-INTERNET  992952
-TELEAPP     7048
+          count
+source         
+INTERNET   99.3
+TELEAPP     0.7
 
 
 DataFrame para housing_status:
-                 count
-housing_status        
-BC              372143
-BB              260965
-BA              169675
-BE              169135
-BD               26161
-BF                1669
-BG                 252
+                count
+housing_status       
+BC              37.21
+BB              26.10
+BA              16.97
+BE              16.91
+BD               2.62
+BF               0.17
+BG               0.03
 
 
 DataFrame para employment_status:
-                    count
-employment_status        
-CA                 730252
-CB                 138288
-CF                  44034
-CC                  37758
-CD                  26522
-CE                  22693
-CG                    453
+                   count
+employment_status       
+CA                 73.03
+CB                 13.83
+CF                  4.40
+CC                  3.78
+CD                  2.65
+CE                  2.27
+CG                  0.05
 
 
 DataFrame para payment_type:
-               count
-payment_type        
-AB            370554
-AA            258249
-AC            252071
-AD            118837
-AE               289
+              count
+payment_type       
+AB            37.06
+AA            25.82
+AC            25.21
+AD            11.88
+AE             0.03
 
 
 </pre>
@@ -9413,7 +9316,6 @@ AE               289
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>He utilizado esta función que he creado. Mira los elementos de la lista cat_vars que coinciden con los elementos del df y devuelve esos elementos con el número de valores diferentes que contienen. De esta forma, evito tener que repetir el proceso para todas las variables.</p>
 <p>Parece que la gran mayoría de sistemas operativos aparecen como 'other', y le sigue Linux. También es destacable que la gran mayoría de fuentes son de internet y no de teleapp.</p>
 <p>En cuanto al housing_status, la mayoría de datos se encuentran entre el tipo C, B, A y E, y con el employment_status ocurre igual pero con A y B.</p>
 <p>El tipo de pago sin embargo está bastante repartido, siendo minoritaria la cantidad del tipo E.</p>
@@ -9428,8 +9330,7 @@ AE               289
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Compruebo que ha funcionado el cambio a category</span>
-
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Comprobación de tipo</span>
 <span class="n">pd_base_filter_null</span><span class="p">[</span><span class="n">cat_vars</span><span class="p">]</span><span class="o">.</span><span class="n">dtypes</span>
 </pre></div>
 </div>
@@ -9443,8 +9344,7 @@ AE               289
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
 <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[ ]:</div>
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
-<pre>fraud_bool           category
-device_os            category
+<pre>device_os            category
 source               category
 housing_status       category
 employment_status    category
@@ -9461,7 +9361,7 @@ dtype: object</pre>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>Y estas son mis variables numéricas</p>
+<p>Y estas son las variables numéricas</p>
 </div>
 </div>
 </div>
@@ -9473,373 +9373,7 @@ dtype: object</pre>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">pd_base_filter_null</span><span class="p">[</span><span class="n">num_vars</span><span class="p">]</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[ ]:</div>
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
-<div>
-<style scoped="">
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-<thead>
-<tr style="text-align: right;">
-<th></th>
-<th>income</th>
-<th>name_email_similarity</th>
-<th>prev_address_months_count</th>
-<th>current_address_months_count</th>
-<th>customer_age</th>
-<th>days_since_request</th>
-<th>intended_balcon_amount</th>
-<th>zip_count_4w</th>
-<th>velocity_6h</th>
-<th>velocity_24h</th>
-<th>velocity_4w</th>
-<th>bank_branch_count_8w</th>
-<th>date_of_birth_distinct_emails_4w</th>
-<th>credit_risk_score</th>
-<th>email_is_free</th>
-<th>phone_home_valid</th>
-<th>phone_mobile_valid</th>
-<th>bank_months_count</th>
-<th>has_other_cards</th>
-<th>proposed_credit_limit</th>
-<th>foreign_request</th>
-<th>session_length_in_minutes</th>
-<th>keep_alive_session</th>
-<th>device_distinct_emails_8w</th>
-<th>device_fraud_count</th>
-<th>month</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<th>0</th>
-<td>0.9</td>
-<td>0.166828</td>
-<td>-1</td>
-<td>88</td>
-<td>50</td>
-<td>0.020925</td>
-<td>-1.331345</td>
-<td>769</td>
-<td>10650.765523</td>
-<td>3134.319630</td>
-<td>3863.647740</td>
-<td>1</td>
-<td>6</td>
-<td>185</td>
-<td>0</td>
-<td>1</td>
-<td>0</td>
-<td>24</td>
-<td>0</td>
-<td>500.0</td>
-<td>0</td>
-<td>3.888115</td>
-<td>0</td>
-<td>1</td>
-<td>0</td>
-<td>7</td>
-</tr>
-<tr>
-<th>1</th>
-<td>0.9</td>
-<td>0.296286</td>
-<td>-1</td>
-<td>144</td>
-<td>50</td>
-<td>0.005418</td>
-<td>-0.816224</td>
-<td>366</td>
-<td>534.047319</td>
-<td>2670.918292</td>
-<td>3124.298166</td>
-<td>718</td>
-<td>3</td>
-<td>259</td>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td>15</td>
-<td>0</td>
-<td>1500.0</td>
-<td>0</td>
-<td>31.798819</td>
-<td>0</td>
-<td>1</td>
-<td>0</td>
-<td>7</td>
-</tr>
-<tr>
-<th>2</th>
-<td>0.9</td>
-<td>0.044985</td>
-<td>-1</td>
-<td>132</td>
-<td>40</td>
-<td>3.108549</td>
-<td>-0.755728</td>
-<td>870</td>
-<td>4048.534263</td>
-<td>2893.621498</td>
-<td>3159.590679</td>
-<td>1</td>
-<td>14</td>
-<td>177</td>
-<td>1</td>
-<td>0</td>
-<td>1</td>
-<td>-1</td>
-<td>0</td>
-<td>200.0</td>
-<td>0</td>
-<td>4.728705</td>
-<td>0</td>
-<td>1</td>
-<td>0</td>
-<td>7</td>
-</tr>
-<tr>
-<th>3</th>
-<td>0.9</td>
-<td>0.159511</td>
-<td>-1</td>
-<td>22</td>
-<td>50</td>
-<td>0.019079</td>
-<td>-1.205124</td>
-<td>810</td>
-<td>3457.064063</td>
-<td>4054.908412</td>
-<td>3022.261812</td>
-<td>1921</td>
-<td>6</td>
-<td>110</td>
-<td>1</td>
-<td>0</td>
-<td>1</td>
-<td>31</td>
-<td>1</td>
-<td>200.0</td>
-<td>0</td>
-<td>2.047904</td>
-<td>0</td>
-<td>1</td>
-<td>0</td>
-<td>7</td>
-</tr>
-<tr>
-<th>4</th>
-<td>0.9</td>
-<td>0.596414</td>
-<td>-1</td>
-<td>218</td>
-<td>50</td>
-<td>0.004441</td>
-<td>-0.773276</td>
-<td>890</td>
-<td>5020.341679</td>
-<td>2728.237159</td>
-<td>3087.670952</td>
-<td>1990</td>
-<td>2</td>
-<td>295</td>
-<td>1</td>
-<td>1</td>
-<td>0</td>
-<td>31</td>
-<td>0</td>
-<td>1500.0</td>
-<td>0</td>
-<td>3.775225</td>
-<td>1</td>
-<td>1</td>
-<td>0</td>
-<td>7</td>
-</tr>
-<tr>
-<th>5</th>
-<td>0.3</td>
-<td>0.143921</td>
-<td>-1</td>
-<td>30</td>
-<td>30</td>
-<td>0.028231</td>
-<td>-0.748282</td>
-<td>732</td>
-<td>3223.248406</td>
-<td>3804.803402</td>
-<td>5078.692467</td>
-<td>5</td>
-<td>13</td>
-<td>199</td>
-<td>1</td>
-<td>0</td>
-<td>1</td>
-<td>15</td>
-<td>0</td>
-<td>200.0</td>
-<td>0</td>
-<td>4.815073</td>
-<td>0</td>
-<td>1</td>
-<td>0</td>
-<td>7</td>
-</tr>
-<tr>
-<th>6</th>
-<td>0.7</td>
-<td>0.321554</td>
-<td>-1</td>
-<td>152</td>
-<td>30</td>
-<td>0.030680</td>
-<td>-0.278994</td>
-<td>876</td>
-<td>5515.771548</td>
-<td>2653.430035</td>
-<td>3089.788379</td>
-<td>13</td>
-<td>10</td>
-<td>272</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>30</td>
-<td>0</td>
-<td>1500.0</td>
-<td>0</td>
-<td>1.558977</td>
-<td>1</td>
-<td>1</td>
-<td>0</td>
-<td>7</td>
-</tr>
-<tr>
-<th>7</th>
-<td>0.9</td>
-<td>0.064817</td>
-<td>-1</td>
-<td>18</td>
-<td>50</td>
-<td>0.034557</td>
-<td>-1.265721</td>
-<td>901</td>
-<td>4736.214496</td>
-<td>6733.703890</td>
-<td>3826.129170</td>
-<td>40</td>
-<td>1</td>
-<td>83</td>
-<td>1</td>
-<td>1</td>
-<td>0</td>
-<td>28</td>
-<td>0</td>
-<td>200.0</td>
-<td>1</td>
-<td>2.637472</td>
-<td>0</td>
-<td>1</td>
-<td>0</td>
-<td>7</td>
-</tr>
-<tr>
-<th>8</th>
-<td>0.7</td>
-<td>0.065938</td>
-<td>-1</td>
-<td>64</td>
-<td>40</td>
-<td>0.020691</td>
-<td>-1.442082</td>
-<td>933</td>
-<td>6101.250655</td>
-<td>3849.761426</td>
-<td>3089.271130</td>
-<td>2134</td>
-<td>4</td>
-<td>222</td>
-<td>0</td>
-<td>1</td>
-<td>1</td>
-<td>30</td>
-<td>0</td>
-<td>1500.0</td>
-<td>0</td>
-<td>2.175419</td>
-<td>1</td>
-<td>1</td>
-<td>0</td>
-<td>7</td>
-</tr>
-<tr>
-<th>9</th>
-<td>0.9</td>
-<td>0.700096</td>
-<td>-1</td>
-<td>60</td>
-<td>40</td>
-<td>0.016809</td>
-<td>-1.070271</td>
-<td>1176</td>
-<td>4504.470396</td>
-<td>3793.831786</td>
-<td>3061.245889</td>
-<td>8</td>
-<td>2</td>
-<td>118</td>
-<td>1</td>
-<td>0</td>
-<td>1</td>
-<td>25</td>
-<td>0</td>
-<td>200.0</td>
-<td>0</td>
-<td>24.040726</td>
-<td>0</td>
-<td>1</td>
-<td>0</td>
-<td>7</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Compruebo que ha funcionado</span>
-
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Comprobación</span>
 <span class="n">pd_base_filter_null</span><span class="p">[</span><span class="n">num_vars</span><span class="p">]</span><span class="o">.</span><span class="n">dtypes</span>
 </pre></div>
 </div>
@@ -9853,32 +9387,30 @@ dtype: object</pre>
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
 <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[ ]:</div>
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
-<pre>income                              float64
-name_email_similarity               float64
-prev_address_months_count             int64
-current_address_months_count          int64
-customer_age                          int64
-days_since_request                  float64
+<pre>date_of_birth_distinct_emails_4w      int64
 intended_balcon_amount              float64
-zip_count_4w                          int64
-velocity_6h                         float64
+name_email_similarity               float64
 velocity_24h                        float64
-velocity_4w                         float64
-bank_branch_count_8w                  int64
-date_of_birth_distinct_emails_4w      int64
 credit_risk_score                     int64
-email_is_free                         int64
-phone_home_valid                      int64
 phone_mobile_valid                    int64
-bank_months_count                     int64
-has_other_cards                       int64
-proposed_credit_limit               float64
-foreign_request                       int64
-session_length_in_minutes           float64
-keep_alive_session                    int64
-device_distinct_emails_8w             int64
-device_fraud_count                    int64
+customer_age                          int64
 month                                 int64
+velocity_4w                         float64
+has_other_cards                       int64
+velocity_6h                         float64
+days_since_request                  float64
+proposed_credit_limit               float64
+prev_address_months_count             int64
+zip_count_4w                          int64
+session_length_in_minutes           float64
+bank_branch_count_8w                  int64
+income                              float64
+device_distinct_emails_8w             int64
+bank_months_count                     int64
+phone_home_valid                      int64
+current_address_months_count          int64
+email_is_free                         int64
+device_fraud_count                    int64
 dtype: object</pre>
 </div>
 </div>
@@ -9891,7 +9423,7 @@ dtype: object</pre>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>Me pareció interesante ver en proporción los employment_types, así se aprecia mejor que la mayoría son de tipo A y B</p>
+<p>Es interesante ver en proporción los employment_types, así se aprecia mejor que la mayoría son de tipo A y B.</p>
 </div>
 </div>
 </div>
@@ -9903,9 +9435,12 @@ dtype: object</pre>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">pd_base_filter_null</span><span class="p">[</span><span class="s1">'employment_status'</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">count</span><span class="p">())</span>
-<span class="n">pd_base_filter_null</span><span class="p">[</span><span class="s1">'employment_status'</span><span class="p">]</span>\
-    <span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span><span class="o">.</span><span class="n">value_counts</span><span class="p">(</span><span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Conteo de valores normalizados en la variable employment_status</span>
+<span class="p">(</span>
+    <span class="n">pd_base_filter_null</span><span class="p">[</span><span class="s1">'employment_status'</span><span class="p">]</span>
+        <span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+        <span class="o">.</span><span class="n">value_counts</span><span class="p">(</span><span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -9915,13 +9450,6 @@ dtype: object</pre>
 <div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>7
-</pre>
-</div>
-</div>
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
 <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[ ]:</div>
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
@@ -9945,7 +9473,7 @@ Name: proportion, dtype: float64</pre>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>Por último, guardo todo en un csv</p>
+<p>Guardado en un csv</p>
 </div>
 </div>
 </div>
@@ -9957,7 +9485,7 @@ Name: proportion, dtype: float64</pre>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">pd_base_filter_null</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">"../data/preprocessed/pd_data_initial_preprocessing.csv"</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">write_csv</span><span class="p">(</span><span class="n">pd_base_filter_null</span><span class="p">,</span> <span class="s2">"data/preprocessed/pd_data_initial_preprocessing.csv"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
