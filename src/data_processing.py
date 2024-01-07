@@ -47,10 +47,11 @@ def create_na(data: pd.DataFrame, columns: list[str]) -> pd.DataFrame:
     if isinstance(columns, str):
         columns = [columns]
 
+    data["email_is_free"] = data["email_is_free"].astype("object")
     for column in columns:
         
         # Replace the < 0 with NA value
-        data.loc[data.loc[:,column] < 0, column] = np.nan
+        data.loc[data.loc[:,column] < 0, column] = None
 
     return data
 
@@ -60,16 +61,27 @@ def preprocess(
     fill_na_values: dict,
     one_hot_encoder: OneHotEncoder,
     scaler: StandardScaler,
-    variable_types: dict
+    variable_types: dict,
+    model_variables: list[str]
     ) -> pd.DataFrame:
 
     data = data.copy()
 
+    numerical_vars = [v for v in variable_types["numericals"] if v in model_variables]
+    categorical_vars = [v for v in variable_types["categoricals"] if v in model_variables]
+    binary_vars = [v for v in variable_types["binary"] if v in model_variables]
+    
     # Change negatvie values with NA
-    data = create_na(data, [c for c in variable_types["numericals"] if c not in ["velocity_6h", "credit_risk_score"]])
+    data = create_na(data, [c for c in data.columns
+                                if c in numerical_vars 
+                                # These -1 values do make sense as non NA
+                                and c not in ["velocity_6h", "credit_risk_score"]
+                            ]
+    )
 
     for column in data.columns:
 
+        # if column not there... create it with NA
         if data[column].isna().sum() > 0:
             value_to_impute = fill_na_values[column]
 
@@ -78,9 +90,9 @@ def preprocess(
             data[column] = data[column].fillna(value=value_to_impute)
 
 
-    numericals = data[variable_types["numericals"]]
-    categoricals = data[variable_types["categoricals"]]
-    binaries = data[variable_types["binary"]]
+    numericals = data[numerical_vars]
+    categoricals = data[categorical_vars]
+    binaries = data[binary_vars]
 
     transformed_numericals =  pd.DataFrame(scaler.transform(numericals), columns=numericals.columns)
     transformed_categoricals =  one_hot_encoder.transform(categoricals)
