@@ -14,13 +14,8 @@ from flask import Flask, request
 app = Flask(__name__)
 
 # Load traiend models and processers
-global model
 model = read_model("LogisticRegression")
-
-global one_hot_encoder
 one_hot_encoder = read_model("one_hot_encoder")
-
-global scaler
 scaler = read_model("scaler")
 
 
