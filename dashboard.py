@@ -90,7 +90,7 @@ with file_tab:
 
 # Only request server if data changes
 @st.cache_data
-def post(json: dict) -> dict:
+def post(json: dict) -> requests.Response:
     
     # Post data to model server
     return requests.post(
@@ -142,8 +142,8 @@ else:
 
     response = post(json={"data": data})
 
-st.markdown("### Response")
-st.json(response.json())
+st.markdown("### Predictions")
+st.dataframe(response.json())
 
 
 threshold = st.number_input(
