@@ -29,10 +29,9 @@ def hello_world():
 @app.route("/predict", methods=["POST"])
 def predict():
 
-    # What is being passed to the server
-    data = pd.DataFrame(
-        {key: [value] for key, value in request.json.items()}
-    )
+    print(f"REQUEST: {request.json}")
+
+    data = pd.DataFrame(request.json["data"])
 
     # Filter raw columns in case there is sometihng unexpected
     for column in data.columns:
@@ -60,15 +59,14 @@ def predict():
     # Use only varaibles seen during fit
     X = X[model.feature_names_in_]
 
-    prediction = model.predict(X)[0]
+    prediction = [int(p) for p in model.predict(X)]
     probas = model.predict_proba(X)
-    fraud_proba = probas[0][1]
-    fraud_proba = round(fraud_proba, 4)
+    fraud_proba = [float(round(p)) for p in probas[0:,1]]
 
     response = {
-        "prediction": int(prediction),
-        "proba": float(fraud_proba),
-        "status": "Paid" if prediction == 0 else "Fraud"
+        "prediction": prediction,
+        "proba": fraud_proba,
+        "status": ["Paid" if p == 0 else "Fraud" for p in fraud_proba]
     }
 
     pprint(response)

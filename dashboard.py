@@ -1,10 +1,11 @@
 import requests
 import streamlit as st
 import os
+import pandas as pd
 
-HOST = os.environ["MODEL_SERVER_HOST"]
-PORT = os.environ["MODEL_SERVER_PORT"]
-ENDPOINT = os.environ["MODEL_SERVER_ENDPOINT"]
+HOST = os.getenv("MODEL_SERVER_HOST", "http://localhost")
+PORT = os.getenv("MODEL_SERVER_PORT", 5000)
+ENDPOINT = os.getenv("MODEL_SERVER_ENDPOINT", "/predict")
 
 url = f"{HOST}:{PORT}{ENDPOINT}"
 
@@ -82,42 +83,62 @@ with manual_tab:
         email_is_free = email_is_free == "Yes"
 
 with file_tab:
-    st.file_uploader(
-        label="Upload a CSV file",
-        type=["csv"]
+    csv = st.file_uploader(
+        label="Upload a CSV or excel file",
+        type=["csv", "xlsx", "xls"]
     )
 
+def post(json: dict) -> dict:
+    
+    # Post data to model server
+    return requests.post(
+        url=url,
+        headers=headers,
+        json=json
+    )
 
-data = {
-    "device_os": device_os,
-    "source": source,
-    "housing_status": housing_status,
-    "employment_status": employment_status,
-    "payment_type": payment_type,
-    "date_of_birth_distinct_emails_4w": date_of_birth_distinct_emails_4w,
-    "name_email_similarity": name_email_similarity,
-    "credit_risk_score": credit_risk_score,
-    "customer_age": customer_age,
-    "month": month,
-    "has_other_cards": has_other_cards,
-    "proposed_credit_limit": proposed_credit_limit,
-    "prev_address_months_count": prev_address_months_count,
-    "zip_count_4w": zip_count_4w,
-    "income": income,
-    "device_distinct_emails_8w": device_distinct_emails_8w,
-    "bank_months_count": bank_months_count,
-    "phone_home_valid": phone_home_valid,
-    "foreign_request": foreign_request,
-    "keep_alive_session": keep_alive_session,
-    "email_is_free": email_is_free
-}
+if csv:
 
-# Post data to model server
-response = requests.post(
-    url=url,
-    headers=headers,
-    json=data
-)
+    try:
+        uploaded_data_df = pd.read_csv(csv)
+    except UnicodeDecodeError:
+        uploaded_data_df = pd.read_excel(csv)
+    
+    with file_tab:
+        st.dataframe(uploaded_data_df)
+
+    # Convert to json for the request
+    data = uploaded_data_df.to_dict(orient="records")
+    response = post(json={"data": data})
+
+else:
+
+    # Build the json from the inputs on frontend
+    data = [{
+            "device_os": device_os,
+            "source": source,
+            "housing_status": housing_status,
+            "employment_status": employment_status,
+            "payment_type": payment_type,
+            "date_of_birth_distinct_emails_4w": date_of_birth_distinct_emails_4w,
+            "name_email_similarity": name_email_similarity,
+            "credit_risk_score": credit_risk_score,
+            "customer_age": customer_age,
+            "month": month,
+            "has_other_cards": has_other_cards,
+            "proposed_credit_limit": proposed_credit_limit,
+            "prev_address_months_count": prev_address_months_count,
+            "zip_count_4w": zip_count_4w,
+            "income": income,
+            "device_distinct_emails_8w": device_distinct_emails_8w,
+            "bank_months_count": bank_months_count,
+            "phone_home_valid": phone_home_valid,
+            "foreign_request": foreign_request,
+            "keep_alive_session": keep_alive_session,
+            "email_is_free": email_is_free
+        }]
+
+    response = post(json={"data": data})
 
 st.markdown("### Response")
 st.json(response.json())
