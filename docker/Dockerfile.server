@@ -1,0 +1,13 @@
+FROM python:3.10-slim-bullseye
+
+COPY requirements_full.txt .
+RUN python3 -m venv .venv
+RUN .venv/bin/pip install -r requirements_full.txt
+
+COPY ./models ./models
+
+COPY ./src ./src
+COPY ./metadata ./metadata
+COPY app.py .
+
+CMD [ ".venv/bin/python3", "-m" , "flask", "run", "--host=0.0.0.0"]
