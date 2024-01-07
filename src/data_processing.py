@@ -47,7 +47,11 @@ def create_na(data: pd.DataFrame, columns: list[str]) -> pd.DataFrame:
     if isinstance(columns, str):
         columns = [columns]
 
-    data["email_is_free"] = data["email_is_free"].astype("object")
+    # Avoid data type related warning from pandas
+    if "email_is_free" in data.columns:
+
+        data["email_is_free"] = data["email_is_free"].astype("object")
+    
     for column in columns:
         
         # Replace the < 0 with NA value
@@ -81,7 +85,10 @@ def preprocess(
 
     for column in data.columns:
 
-        # if column not there... create it with NA
+        # Handle completely missing columns (not just a row)
+        if column not in data.columns:
+            data[column] = None
+        
         if data[column].isna().sum() > 0:
             value_to_impute = fill_na_values[column]
 
