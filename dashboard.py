@@ -88,6 +88,8 @@ with file_tab:
         type=["csv", "xlsx", "xls"]
     )
 
+# Only request server if data changes
+@st.cache_data
 def post(json: dict) -> dict:
     
     # Post data to model server
@@ -144,15 +146,15 @@ st.markdown("### Response")
 st.json(response.json())
 
 
-
 threshold = st.number_input(
     "Threshold",
     min_value=0.0,
     max_value=1.0,
-    step=0.1
-    )
+    step=0.05,
+    value=0.0
+)
 
-defaults = ["Paid" if p >= threshold else "Fraud" for p in response.json()["proba"]]
+defaults = ["Fraud" if p > threshold else "Legit" for p in response.json()["proba"]]
 
 st.markdown("### Default?")
 st.markdown(defaults)

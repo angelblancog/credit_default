@@ -61,7 +61,7 @@ def predict():
 
     prediction = [int(p) for p in model.predict(X)]
     probas = model.predict_proba(X)
-    fraud_proba = [float(round(p)) for p in probas[0:,1]]
+    fraud_proba = [float(round(p, 4)) for p in probas[0:,1]]
 
     response = {
         "prediction": prediction,
