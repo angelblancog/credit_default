@@ -143,8 +143,16 @@ else:
 st.markdown("### Response")
 st.json(response.json())
 
-status = response.json()['status']
-give_credit = status == "Paid"
 
-st.markdown(f"Status: {status}")
-st.markdown(f"Give credit: {give_credit}")
+
+threshold = st.number_input(
+    "Threshold",
+    min_value=0.0,
+    max_value=1.0,
+    step=0.1
+    )
+
+defaults = ["Paid" if p >= threshold else "Fraud" for p in response.json()["proba"]]
+
+st.markdown("### Default?")
+st.markdown(defaults)

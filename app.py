@@ -66,7 +66,6 @@ def predict():
     response = {
         "prediction": prediction,
         "proba": fraud_proba,
-        "status": ["Paid" if p == 0 else "Fraud" for p in fraud_proba]
     }
 
     pprint(response)
