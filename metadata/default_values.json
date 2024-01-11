@@ -1,0 +1,23 @@
+{
+    "Device_OS": "Linux",
+    "Employment Status": "CA",
+    "Housing Status": "BA",
+    "Source": "INTERNET",
+    "Payment type": "AA",
+    "Date of birth distinct emails 4w": 0,
+    "name_email_similarity": 0.0,
+    "credit_risk_score": 1,
+    "customer_age": 18,
+    "month": 1,
+    "has_other_cards": 0,
+    "proposed_credit_limit": 1,
+    "prev_address_months_count": 0,
+    "zip_count_4w": 1,
+    "income": 0.1,
+    "device_distinct_emails_8w": 0,
+    "bank_months_count": 0,
+    "phone_home_valid": "Yes",
+    "foreign_request": "Yes",
+    "keep_alive_session": "Yes",
+    "email_is_free": "Yes"
+}

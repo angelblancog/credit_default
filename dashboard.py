@@ -1,38 +1,56 @@
+# Description: Dashboard for the credit default predictor
+
+# Libraries
 import requests
 import streamlit as st
 import os
+
+# Processing
 import pandas as pd
 
+# Constants
+from src.const import default_values
+
+# Working directory check
 print(os.getcwd())
 
+# Model server configuration
 HOST = os.getenv("MODEL_SERVER_HOST", "http://localhost")
 PORT = os.getenv("MODEL_SERVER_PORT", 5000)
 ENDPOINT = os.getenv("MODEL_SERVER_ENDPOINT", "/predict")
 
+# Construction of the server url
 url = f"{HOST}:{PORT}{ENDPOINT}"
 
+# Headers for the request
 headers = {
     "Content-Type": "application/json",
 }
 
-# Page config
-st.set_page_config(page_title="Credit Default Predictor", page_icon="logo.jpeg", layout="centered", initial_sidebar_state="auto", menu_items=None)
+# Page configuration
+st.set_page_config(page_title="Credit Default Predictor", 
+                   page_icon="logo.jpeg", 
+                   layout="centered", 
+                   initial_sidebar_state="auto", 
+                   menu_items=None)
 
-# Title and subtitle
+# Addition of title and subtitle
 st.title("Credit Default Predictor")
 st.markdown("This app predicts the **Default** probability of a credit card user")
 
 # Tabs for manual use and file upload
-manual_tab, file_tab = st.tabs(["Manual mode", "File mode"])
+file_tab, manual_tab  = st.tabs(["File mode", "Manual mode"])
 
+# Structure for manual inputs
 with manual_tab:
 
+    # Manual inputs are controlled on the sidebar for better visualization
     with st.sidebar:
 
         # Logo
         st.image("logo.jpeg", use_column_width=True)
 
-        # Model inputs
+        # Model inputs avaliable on the selectboxes
         device_os = st.selectbox(
             label="Device OS",
             options=['windows', 'other', 'linux', 'macintosh', 'x11'],
@@ -63,6 +81,7 @@ with manual_tab:
             index=0
         )
 
+        # Numerical inputs dealt with manual numeric inputs or + and - buttons
         date_of_birth_distinct_emails_4w = st.number_input(
             label="Date of birth distinct emails 4w",
             value=0,
@@ -70,7 +89,7 @@ with manual_tab:
             step=1
         )
 
-        # Numerical inputs
+
         name_email_similarity = st.number_input(label="name_email_similarity", 
                                                 min_value=0.0, 
                                                 step=0.0001, 
@@ -148,7 +167,7 @@ with manual_tab:
                                             value=0
                                             )
         
-        # Binaries
+        # Binary variables dealt with selectboxes
         phone_home_valid = st.selectbox(label="phone_home_valid", 
                                         options=["Yes", "No"], 
                                         index=0
@@ -169,12 +188,28 @@ with manual_tab:
                                      index=0
                                      )
         
-        # Parse to boolean
+        # Parse options to boolean for the model
         phone_home_valid = phone_home_valid == "Yes"
         foreign_request = foreign_request == "Yes"
         keep_alive_session = keep_alive_session == "Yes"
         email_is_free = email_is_free == "Yes"
 
+    # Summary of manual imputs for the user
+    selected_values = {}
+
+    for variable_name, default_value in default_values.items():
+        selected_values[variable_name] = st.sidebar.number_input(
+            label=variable_name.capitalize(),
+            value=default_value
+        )
+    selected_values['Variable1'] = st.sidebar.number_input("Variable 1", value=0.0)
+    selected_values['Variable2'] = st.sidebar.text_input("Variable 2", value='')
+
+    st.markdown("### Summary of inputs")
+    summary = pd.DataFrame({'Variable': list(selected_values.keys()), 'Valor': list(selected_values.values())})
+    st.table(summary)
+
+# Configuration for file upload mode
 with file_tab:
     csv = st.file_uploader(
         label="Upload a CSV or excel file",
@@ -210,7 +245,7 @@ if csv:
 # Structure for manual inputs
 else:
 
-    # Build the json from the inputs on frontend
+    # Build the json from the manual inputs on frontend
     data = [{
             "device_os": device_os,
             "source": source,
@@ -235,10 +270,13 @@ else:
             "email_is_free": email_is_free
         }]
 
+    # Respond to the post request with the predictions
     response = post(json={"data": data})
 
-st.markdown("### Predictions")
-st.dataframe(response.json())
+# 
+st.markdown("### Predicted probability")
+probabilities = pd.DataFrame(response.json()["probability"])
+st.table(probabilities)
 
 # Threshold for fraud
 threshold = st.number_input(
@@ -249,7 +287,7 @@ threshold = st.number_input(
     value=0.0
 )
 
-defaults = ["Potential fraud" if p > threshold else "" for p in response.json()["probability"]]
+defaults = ["Potential fraud" if p > threshold else "Normal" for p in response.json()["probability"]]
 
 st.markdown("### Results")
-st.markdown(defaults)
+st.table(defaults)

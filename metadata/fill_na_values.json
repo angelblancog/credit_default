@@ -1,1 +1,21 @@
-{"date_of_birth_distinct_emails_4w": 9.0, "name_email_similarity": 0.4921525275151668, "credit_risk_score": 124.0, "customer_age": 30.0, "month": 3.0, "has_other_cards": 0.0, "proposed_credit_limit": 200.0, "prev_address_months_count": 34.0, "zip_count_4w": 1263.0, "income": 0.6000000000000001, "device_distinct_emails_8w": 1.0, "bank_months_count": 15.0, "phone_home_valid": 0.0, "email_is_free": 1.0, "device_os": "other", "source": "INTERNET", "housing_status": "BC", "employment_status": "CA", "payment_type": "AB"}
+{
+    "date_of_birth_distinct_emails_4w": 9.0,
+    "name_email_similarity": 0.4921525275151668,
+    "credit_risk_score": 124.0,
+    "customer_age": 30.0,
+    "month": 3.0,
+    "has_other_cards": 0.0,
+    "proposed_credit_limit": 200.0,
+    "prev_address_months_count": 34.0,
+    "zip_count_4w": 1263.0,
+    "income": 0.6000000000000001,
+    "device_distinct_emails_8w": 1.0,
+    "bank_months_count": 15.0,
+    "phone_home_valid": 0.0,
+    "email_is_free": 1.0,
+    "device_os": "other",
+    "source": "INTERNET",
+    "housing_status": "BC",
+    "employment_status": "CA",
+    "payment_type": "AB"
+}
