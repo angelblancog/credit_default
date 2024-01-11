@@ -35,8 +35,7 @@ Oscila entre [0, 79] días.
 7. **intended_balcon_amount** (<font color='orange'>numérica</font>): Importe inicial transferido para la solicitud.
 Oscila entre [-16, 114] (los valores negativos son valores omitidos).
 
-8. **payment_type** (<font color='lightgreen'>categórica</font>): Tipo de plan de pago del crédito. 5 posibles valores (anonimizados)
-(anonimizados).
+8. **payment_type** (<font color='lightgreen'>categórica</font>): Tipo de plan de pago del crédito. 5 posibles valores (anonimizados).
 
 9. **zip_count_4w** (<font color='orange'>numérica</font>): Número de solicitudes dentro del mismo código postal en las últimas 4 semanas.
 Rangos entre [1, 6830].

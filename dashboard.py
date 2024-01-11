@@ -3,6 +3,8 @@ import streamlit as st
 import os
 import pandas as pd
 
+print(os.getcwd())
+
 HOST = os.getenv("MODEL_SERVER_HOST", "http://localhost")
 PORT = os.getenv("MODEL_SERVER_PORT", 5000)
 ENDPOINT = os.getenv("MODEL_SERVER_ENDPOINT", "/predict")
@@ -13,14 +15,23 @@ headers = {
     "Content-Type": "application/json",
 }
 
-st.title("Credit Card Default Predictor")
+# Page config
+st.set_page_config(page_title="Credit Default Predictor", page_icon="logo.jpeg", layout="centered", initial_sidebar_state="auto", menu_items=None)
+
+# Title and subtitle
+st.title("Credit Default Predictor")
 st.markdown("This app predicts the **Default** probability of a credit card user")
 
+# Tabs for manual use and file upload
 manual_tab, file_tab = st.tabs(["Manual mode", "File mode"])
 
 with manual_tab:
 
     with st.sidebar:
+
+        # Logo
+        st.image("logo.jpeg", use_column_width=True)
+
         # Model inputs
         device_os = st.selectbox(
             label="Device OS",
@@ -59,25 +70,107 @@ with manual_tab:
             step=1
         )
 
-
-        name_email_similarity = st.number_input(label="name_email_similarity", min_value=0, step=1, max_value=1000, value=1)
-        credit_risk_score = st.number_input(label="credit_risk_score", min_value=0, step=1, max_value=1000, value=1)
-        customer_age = st.number_input(label="customer_age", min_value=0, step=1, max_value=1000, value=1)
-        month = st.number_input(label="month", min_value=0, step=1, max_value=1000, value=1)
-        has_other_cards = st.number_input(label="has_other_cards", min_value=0, step=1, max_value=1000, value=1)
-        proposed_credit_limit = st.number_input(label="proposed_credit_limit", min_value=0, step=1, max_value=1000, value=1)
-        prev_address_months_count = st.number_input(label="prev_address_months_count", min_value=0, step=1, max_value=1000, value=1)
-        zip_count_4w = st.number_input(label="zip_count_4w", min_value=0, step=1, max_value=1000, value=1)
-        income = st.number_input(label="income", min_value=0, step=1, max_value=1000, value=1)
-        device_distinct_emails_8w = st.number_input(label="device_distinct_emails_8w", min_value=0, step=1, max_value=1000, value=1)
-        bank_months_count = st.number_input(label="bank_months_count", min_value=0, step=1, max_value=1000, value=1)
-        phone_home_valid = st.number_input(label="phone_home_valid", min_value=0, step=1, max_value=1000, value=1)
+        # Numerical inputs
+        name_email_similarity = st.number_input(label="name_email_similarity", 
+                                                min_value=0.0, 
+                                                step=0.0001, 
+                                                max_value=1.0, 
+                                                value=0.0
+                                                )
         
-        foreign_request = st.selectbox(label="foreign_request", options=["Yes", "No"], index=0)
-        keep_alive_session = st.selectbox(label="keep_alive_session", options=["Yes", "No"], index=0)
-        email_is_free = st.selectbox(label="email_is_free", options=["Yes", "No"], index=0)
+        credit_risk_score = st.number_input(label="credit_risk_score", 
+                                            min_value=-1000, 
+                                            step=1, 
+                                            max_value=1000, 
+                                            value=1
+                                            )
+        
+        customer_age = st.number_input(label="customer_age", 
+                                       min_value=1, 
+                                       step=1, 
+                                       max_value=100, 
+                                       value=18
+                                       )
+        
+        month = st.number_input(label="month", 
+                                min_value=0, 
+                                step=1, 
+                                max_value=7, 
+                                value=1
+                                )
+        
+        has_other_cards = st.number_input(label="has_other_cards", 
+                                          min_value=0, 
+                                          step=1, 
+                                          max_value=1, 
+                                          value=0
+                                          )
+        
+        proposed_credit_limit = st.number_input(label="proposed_credit_limit", 
+                                                min_value=0, 
+                                                step=1, 
+                                                max_value=1000000, 
+                                                value=1
+                                                )
+        
+        prev_address_months_count = st.number_input(label="prev_address_months_count", 
+                                                    min_value=0, 
+                                                    step=1, 
+                                                    max_value=1000, 
+                                                    value=0
+                                                    )
+        
+        zip_count_4w = st.number_input(label="zip_count_4w", 
+                                       min_value=1, 
+                                       step=1, 
+                                       max_value=10000, 
+                                       value=1
+                                       )
+        
+        income = st.number_input(label="income", 
+                                 min_value=0.0, 
+                                 step=0.1, 
+                                 max_value=1.0, 
+                                 value=0.1
+                                 )
+        
+        device_distinct_emails_8w = st.number_input(label="device_distinct_emails_8w", 
+                                                    min_value=0, 
+                                                    step=1, 
+                                                    max_value=10, 
+                                                    value=0
+                                                    )
+        
+        bank_months_count = st.number_input(label="bank_months_count", 
+                                            min_value=0, 
+                                            step=1, 
+                                            max_value=1200, 
+                                            value=0
+                                            )
+        
+        # Binaries
+        phone_home_valid = st.selectbox(label="phone_home_valid", 
+                                        options=["Yes", "No"], 
+                                        index=0
+                                        )
+
+        foreign_request = st.selectbox(label="foreign_request", 
+                                       options=["Yes", "No"], 
+                                       index=0
+                                       )
+
+        keep_alive_session = st.selectbox(label="keep_alive_session", 
+                                          options=["Yes", "No"], 
+                                          index=0
+                                          )
+
+        email_is_free = st.selectbox(label="email_is_free", 
+                                     options=["Yes", "No"], 
+                                     index=0
+                                     )
         
         # Parse to boolean
+        phone_home_valid = phone_home_valid == "Yes"
         foreign_request = foreign_request == "Yes"
         keep_alive_session = keep_alive_session == "Yes"
         email_is_free = email_is_free == "Yes"
@@ -88,7 +181,7 @@ with file_tab:
         type=["csv", "xlsx", "xls"]
     )
 
-# Only request server if data changes
+# Only request server if data changes to avoid unnecessary requests
 @st.cache_data
 def post(json: dict) -> requests.Response:
     
@@ -99,6 +192,7 @@ def post(json: dict) -> requests.Response:
         json=json
     )
 
+# Structure for csv and excel files
 if csv:
 
     try:
@@ -113,6 +207,7 @@ if csv:
     data = uploaded_data_df.to_dict(orient="records")
     response = post(json={"data": data})
 
+# Structure for manual inputs
 else:
 
     # Build the json from the inputs on frontend
@@ -145,7 +240,7 @@ else:
 st.markdown("### Predictions")
 st.dataframe(response.json())
 
-
+# Threshold for fraud
 threshold = st.number_input(
     "Threshold",
     min_value=0.0,
@@ -154,7 +249,7 @@ threshold = st.number_input(
     value=0.0
 )
 
-defaults = ["Fraud" if p > threshold else "Legit" for p in response.json()["proba"]]
+defaults = ["Potential fraud" if p > threshold else "" for p in response.json()["probability"]]
 
-st.markdown("### Default?")
+st.markdown("### Results")
 st.markdown(defaults)

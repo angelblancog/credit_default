@@ -1,26 +1,35 @@
+# Explanation of the files needed to build the docker containter
 services:
   
+  # Dockerfile.server is the file that will build the server
+  # It has the config to trigger the copy and run of all the files needed
   model-server:
     container_name: model-server
     build: 
       context: .
       dockerfile: docker/Dockerfile.server
 
+    # Port 5000 is the default port for flask
     ports:
       - 5000:5000
 
+  # The dashboard is a streamlit app used to interact with the model
+  # Dockerfile.dashboard is the file that will build the dashboard
   dashboard:
     container_name: dashboard
     build: 
       context: .
       dockerfile: docker/Dockerfile.dashboard
 
+    # Port 8501 is the default port for streamlit
     ports:
       - 8501:8501
-
+    
+    # Links the env configuration file to the container
     env_file:
       - .env
 
+    # It will wait for the model-server to be up and running to activate
     depends_on:
       model-server: 
-        condition: service_started
+        condition: service_started 

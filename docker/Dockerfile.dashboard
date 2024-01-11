@@ -1,11 +1,17 @@
 FROM python:3.10-slim-bullseye
 
+# Set working directory
 WORKDIR /home
 
+# Install dependencies
 COPY requirements_dashboard.txt .
 RUN python3 -m venv .venv
 RUN .venv/bin/pip install -r requirements_dashboard.txt
 
+# Copy files
+COPY logo.jpeg .
 COPY dashboard.py .
+COPY ./template ./template
 
+# Run dashboard app
 CMD [ ".venv/bin/python3", "-m" , "streamlit", "run", "dashboard.py"]

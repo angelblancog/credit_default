@@ -23,7 +23,7 @@ scaler = read_model("scaler")
 def hello_world():
     print(request.headers)
 
-    return "Hello, World!"
+    return "Server is running"
 
 
 @app.route("/predict", methods=["POST"])
@@ -65,7 +65,7 @@ def predict():
 
     response = {
         "prediction": prediction,
-        "proba": fraud_proba,
+        "probability": fraud_proba,
     }
 
     pprint(response)
