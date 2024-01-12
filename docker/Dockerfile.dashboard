@@ -14,7 +14,6 @@ COPY logo.jpeg .
 COPY dashboard.py .
 COPY ./src ./src
 COPY ./metadata ./metadata
-COPY ./docs ./docs
 
 # Run dashboard app
 CMD [ ".venv/bin/python3", "-m" , "streamlit", "run", "dashboard.py"]
