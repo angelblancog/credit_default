@@ -1,4 +1,4 @@
-# **Practica EDA**
+# **Practica Credit Default**
 
 **Autor**: Ángel Blanco García.  
 **Institución**: CUNEF Universidad.  
