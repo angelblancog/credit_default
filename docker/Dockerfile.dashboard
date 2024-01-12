@@ -12,7 +12,6 @@ RUN .venv/bin/pip install -r requirements_dashboard.txt
 # Copy files
 COPY logo.jpeg .
 COPY dashboard.py .
-COPY ./template ./template
 COPY ./src ./src
 COPY ./metadata ./metadata
 COPY ./docs ./docs
