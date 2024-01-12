@@ -1,4 +1,4 @@
-# **Practica Credit Default**
+# **Práctica Credit Default**
 
 **Autor**: Ángel Blanco García.  
 **Institución**: CUNEF Universidad.  
