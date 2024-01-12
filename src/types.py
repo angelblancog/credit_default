@@ -17,8 +17,3 @@ class ModelVariables(TypedDict):
     transformed: list[str]
     raw: list[str]
     all: list[str]
-
-class DefaultValues(TypedDict):
-    numericals: list[str]
-    categoricals: list[str]
-    binary: list[str]

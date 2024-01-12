@@ -3,9 +3,11 @@ services:
   
   # Dockerfile.server is the file that will build the server
   # It has the config to trigger the copy and run of all the files needed
+  # angelbg34/model-server:latest is one of the images that will be used to build the container
   model-server:
+    image: angelbg34/model-server:latest
     container_name: model-server
-    build: 
+    build:
       context: .
       dockerfile: docker/Dockerfile.server
 
@@ -15,7 +17,9 @@ services:
 
   # The dashboard is a streamlit app used to interact with the model
   # Dockerfile.dashboard is the file that will build the dashboard
+  # angelbg34/dashboard:latest is the other image that will be used to build the container
   dashboard:
+    image: angelbg34/dashboard:latest
     container_name: dashboard
     build: 
       context: .

@@ -6,7 +6,8 @@
 
 ### **Datos de contacto**
 [<font color='orange'>Correo</font>](angel.blanco@cunef.edu)  
-[Github](https://github.com/angelblancog/credit_default)
+[<font color='lime'>Github</font>](https://github.com/angelblancog/credit_default)  
+[Docker](https://hub.docker.com/u/angelbg34)
 
 Este proyecto trata todos los pasos necesarios para la formulación de un modelo de Machine Learning de clasificación sobre un dataset de fraude bancario. que son los siguientes:
 
@@ -37,13 +38,15 @@ La idea es hacer modelo sobre datos que tenemos para poder predecir con nuevos d
 
 - [data/](data) con subcarpetas preprocessed para datos preprocesados, processed para datos finales y raw para el conjunto de datos vírgenes.
 
-- [docs/](docs) contiene un markdown del diccionario de datos con algo de diseño e información extra.
+- [docs/](docs) contiene un markdown del diccionario de datos con algo de diseño e información extra, además de las instrucciones para usar el dashboard.
+
+- [docker/](docker) con los archivos necesarios para que funcionen las imágenes de server y dashboard para la demo de producción.
 
 - [html/](html) con los html de los notebooks usados.
 
 - [images/](images) con las imágenes utilizadas.
 
-- [metadata/](metadata) con un json con un diccionario que clasifica las variables por tipos.
+- [metadata/](metadata) con archivo json para mejorar la limpieza y facilitar la lectura del código. 
 
 - [models/](models) que almacena los modelos que se han guardado en pickle.
 
@@ -70,9 +73,12 @@ La idea es hacer modelo sobre datos que tenemos para poder predecir con nuevos d
    - [models.py/](src/models.py) que simplifica la carga y el guardado de los modelos en pickle.
 
    - [plots.py/](src/plots.py) funciones de gráficos.
+   
+   - [prediction.py/](src/prediction.py) funciones para que la app haga predicciones sobre los datos nuevos preprocesados.
+   
+   - [style.py/](src/style.py) funciones de mejora visual de la API.
 
    - [types.py/](src/types.py) simplemente con un diccionario con los tipos de variables para el json.
 
 
 - [tables/](tables) que guarda la tabla de métricas en csv.
-

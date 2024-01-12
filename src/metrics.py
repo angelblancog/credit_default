@@ -1,4 +1,7 @@
+# Processing
 import pandas as pd
+
+# Metrics
 from sklearn.metrics import (
     recall_score, 
     precision_score,  
@@ -14,6 +17,16 @@ def get_metrics(
         y_pred: pd.DataFrame, 
         y_prob: pd.DataFrame
 ) -> dict[str, float]:
+    """Function to calculate the metrics of a model
+
+    Args:
+        y_true (pd.DataFrame): dataset with the true values
+        y_pred (pd.DataFrame): dataset with the predicted values
+        y_prob (pd.DataFrame): dataset with the predicted probabilities
+
+    Returns:
+        dict[str, float]: dictionary with the metrics
+    """    
     return {
         'accuracy': accuracy_score(y_true, y_pred),
         'precission': precision_score(y_true, y_pred),

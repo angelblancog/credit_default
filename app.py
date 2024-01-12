@@ -5,7 +5,6 @@ from pprint import pprint
 
 # Funcions and constants
 from src.models import read_model
-from src.data import read_csv
 from src.const import (
     variable_types,
     fill_na_values,
@@ -17,7 +16,7 @@ from src.data_processing import preprocess
 import pandas as pd
 
 # Server
-from flask import Flask, request, Response
+from flask import Flask, request
 
 # Setting app as the name of the Flask instance
 app = Flask(__name__)
