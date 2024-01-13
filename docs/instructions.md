@@ -66,13 +66,23 @@
 
 7. Interactuar con el dashboard en file mode o manual mode y seleccionando un threshold y una danger zone de detección del fraude.
 
-        creando un archivo propio o con los ejemplos adjuntados aquí
+        creando un archivo propio o con los ejemplos adjuntados aquí 
 
 <div align="center">
 
 [Google drive: archivos ejemplo](https://drive.google.com/drive/folders/16o2QeLKP6ProcPWVQxXWpiVj6fqlNUIp?usp=sharing)
 
 </div>
+
+<br>
+
+- sample.csv es un archivo pequeño para probar la API con normalidad.
+
+- junk.csv tiene una columna alterada para ver que responde correctamente a datos extraños.
+
+- junk.xlsx es el mismo que junk.csv pero en formato excel para probar que sí funciona con archivos Excel.
+
+<br>
 
 ## Interfaz general
 
