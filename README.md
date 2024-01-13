@@ -38,7 +38,7 @@ La idea es hacer modelo sobre datos que tenemos para poder predecir con nuevos d
 
 - [data/](data) con subcarpetas preprocessed para datos preprocesados, processed para datos finales y raw para el conjunto de datos vírgenes.
 
-- [docs/](docs) contiene un markdown del diccionario de datos con algo de diseño e información extra, además de las instrucciones para usar el dashboard.
+- [docs/](docs) contiene un markdown del diccionario de datos con algo de diseño e información extra, además de las **instrucciones para usar el dashboard**.
 
 - [docker/](docker) con los archivos necesarios para que funcionen las imágenes de server y dashboard para la demo de producción.
 

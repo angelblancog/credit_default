@@ -66,6 +66,14 @@
 
 7. Interactuar con el dashboard en file mode o manual mode y seleccionando un threshold y una danger zone de detección del fraude.
 
+        creando un archivo propio o con los ejemplos adjuntados aquí
+
+<div align="center">
+
+[Google drive: archivos ejemplo](https://drive.google.com/drive/folders/16o2QeLKP6ProcPWVQxXWpiVj6fqlNUIp?usp=sharing)
+
+</div>
+
 ## Interfaz general
 
 <div align="right">
